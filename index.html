@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ledger &amp; Line — Trading &amp; Investing, Explained</title>
+<meta name="description" content="Free guides, courses, market news and broker comparisons for people learning to trade and invest.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0E1A2B;
+    --ink-soft: #172436;
+    --paper: #F6F3EC;
+    --paper-dim: #EAE5D8;
+    --gold: #C9A227;
+    --gold-bright: #E6C158;
+    --up: #3F7D5C;
+    --down: #B23A2E;
+    --slate: #5C6B7A;
+    --line: rgba(255,255,255,0.12);
+    --line-dark: rgba(14,26,43,0.12);
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html { scroll-padding-top: 64px; scroll-behavior: smooth; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --paper: #0E1A2B; --paper-dim: #172436; --ink: #F6F3EC; --line-dark: rgba(246,243,236,0.14); }
+  }
+  :root[data-theme="dark"] { --paper: #0E1A2B; --paper-dim: #172436; --ink: #F6F3EC; --line-dark: rgba(246,243,236,0.14); }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif;
+    line-height: 1.55;
+  }
+  h1, h2, h3, .display { font-family: 'Fraunces', Georgia, serif; letter-spacing: -0.01em; }
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  img, svg { max-width: 100%; }
+
+  /* ---- Ticker ---- */
+  .ticker-bar {
+    background: var(--ink);
+    color: var(--paper);
+    overflow: hidden;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--gold);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  @media (prefers-color-scheme: dark) { .ticker-bar { background: #070D16; } }
+  :root[data-theme="dark"] .ticker-bar { background: #070D16; }
+  .ticker-track {
+    display: inline-flex;
+    gap: 40px;
+    padding: 9px 0;
+    animation: scroll 38s linear infinite;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+  }
+  .ticker-track span { display: inline-flex; align-items: center; gap: 8px; opacity: 0.95; }
+  .ticker-track .up { color: #7FD9A6; }
+  .ticker-track .down { color: #F0917F; }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; overflow-x: auto; } }
+
+  /* ---- Nav ---- */
+  header.site {
+    background: var(--paper);
+    border-bottom: 1px solid var(--line-dark);
+    position: sticky;
+    top: 34px;
+    z-index: 49;
+  }
+  nav.wrap { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; }
+  .brand { display: flex; align-items: baseline; gap: 8px; font-family: 'Fraunces', serif; font-weight: 600; font-size: 21px; text-decoration: none; }
+  .brand .amp { color: var(--gold); }
+  .navlinks { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-size: 14.5px; }
+  .navlinks a { text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; }
+  .navlinks a:hover { border-color: var(--gold); }
+  .navtoggle { display: none; background: none; border: 1px solid var(--line-dark); border-radius: 6px; padding: 8px 10px; font-size: 20px; color: var(--ink); }
+  @media (max-width: 760px) {
+    .navlinks { display: none; }
+    .navtoggle { display: block; }
+    .navlinks.open { display: flex; flex-direction: column; position: absolute; left: 0; right: 0; top: 100%; background: var(--paper); padding: 16px 24px 22px; border-bottom: 1px solid var(--line-dark); gap: 16px; }
+  }
+
+  /* ---- Hero ---- */
+  .hero { padding: 76px 0 64px; border-bottom: 1px solid var(--line-dark); }
+  .hero .wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: end; }
+  @media (max-width: 860px) { .hero .wrap { grid-template-columns: 1fr; } .hero { padding: 48px 0 44px; } }
+  .kicker { font-size: 13.5px; color: var(--gold); font-weight: 600; margin: 0 0 14px; }
+  .hero h1 { font-size: clamp(34px, 5.2vw, 56px); line-height: 1.06; margin: 0 0 22px; font-weight: 600; max-width: 15ch; }
+  .hero p.lede { font-size: 18px; color: var(--slate); max-width: 46ch; margin: 0 0 30px; }
+  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 13px 24px; border-radius: 3px; font-weight: 600; font-size: 14.5px; text-decoration: none; border: 1px solid transparent; }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  :root[data-theme="dark"] .btn-primary, @media (prefers-color-scheme: dark) { }
+  .btn-primary:hover { background: var(--gold); color: var(--ink); }
+  .btn-ghost { border-color: var(--line-dark); }
+  .btn-ghost:hover { border-color: var(--gold); }
+  .hero-panel { border: 1px solid var(--line-dark); border-radius: 4px; padding: 24px; background: var(--paper-dim); }
+  .hero-panel .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line-dark); font-size: 14px; }
+  .hero-panel .row:last-child { border-bottom: none; }
+  .hero-panel .label { color: var(--slate); }
+  .hero-panel .val.up { color: var(--up); font-family: 'IBM Plex Mono', monospace; }
+  .hero-panel .val.down { color: var(--down); font-family: 'IBM Plex Mono', monospace; }
+  .hero-panel .foot { font-size: 12px; color: var(--slate); margin-top: 14px; }
+
+  /* ---- Sections ---- */
+  section { padding: 64px 0; border-bottom: 1px solid var(--line-dark); }
+  section:last-of-type { border-bottom: none; }
+  .section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 34px; flex-wrap: wrap; }
+  .section-head h2 { font-size: 30px; margin: 0; font-weight: 600; }
+  .section-head p { color: var(--slate); margin: 6px 0 0; max-width: 52ch; }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  @media (max-width: 860px) { .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+  .card { border: 1px solid var(--line-dark); padding: 24px; border-radius: 4px; }
+  .card h3 { font-size: 18px; margin: 0 0 8px; font-weight: 600; }
+  .card p { font-size: 14.5px; color: var(--slate); margin: 0; }
+
+  .guide-item { display: grid; grid-template-columns: 44px 1fr; gap: 18px; padding: 22px 0; border-bottom: 1px solid var(--line-dark); }
+  .guide-item:last-child { border-bottom: none; }
+  .guide-num { font-family: 'IBM Plex Mono', monospace; color: var(--gold); font-size: 14px; padding-top: 3px; }
+  .guide-item h3 { margin: 0 0 6px; font-size: 18px; }
+  .guide-item p { margin: 0; color: var(--slate); font-size: 15px; max-width: 62ch; }
+
+  table.compare { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  table.compare th, table.compare td { text-align: left; padding: 14px 12px; border-bottom: 1px solid var(--line-dark); vertical-align: top; }
+  table.compare th { color: var(--slate); font-weight: 600; font-size: 13px; text-transform: none; }
+  table.compare tr:hover td { background: var(--paper-dim); }
+  .table-scroll { overflow-x: auto; }
+  .tag { display: inline-block; font-size: 11.5px; padding: 3px 8px; border-radius: 12px; background: var(--paper-dim); border: 1px solid var(--line-dark); margin-right: 6px; }
+
+  .course-card { border: 1px solid var(--line-dark); border-radius: 4px; overflow: hidden; }
+  .course-head { padding: 20px 22px; background: var(--paper-dim); }
+  .course-head .level { font-size: 12px; color: var(--gold); font-weight: 600; }
+  .course-head h3 { margin: 6px 0 4px; font-size: 19px; }
+  .course-head p { margin: 0; color: var(--slate); font-size: 14px; }
+  .course-body { padding: 18px 22px 22px; }
+  .course-body ol { margin: 0; padding-left: 20px; font-size: 14px; color: var(--ink); }
+  .course-body li { margin-bottom: 8px; }
+
+  .market-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 860px) { .market-cols { grid-template-columns: 1fr; } }
+  .market-col h3 { font-size: 16px; margin: 0 0 14px; padding-bottom: 10px; border-bottom: 2px solid var(--gold); }
+  .market-row { display: flex; justify-content: space-between; font-size: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-dark); }
+  .market-row .name { color: var(--slate); }
+  .market-row .chg.up { color: var(--up); font-family: 'IBM Plex Mono', monospace; }
+  .market-row .chg.down { color: var(--down); font-family: 'IBM Plex Mono', monospace; }
+
+  .steps { counter-reset: step; }
+  .step { display: grid; grid-template-columns: 56px 1fr; gap: 20px; padding: 26px 0; border-bottom: 1px solid var(--line-dark); }
+  .step:last-child { border-bottom: none; }
+  .step::before { counter-increment: step; content: counter(step, decimal-leading-zero); font-family: 'IBM Plex Mono', monospace; color: var(--gold); font-size: 22px; }
+  .step h3 { margin: 0 0 6px; font-size: 17px; }
+  .step p { margin: 0; color: var(--slate); font-size: 14.5px; max-width: 64ch; }
+
+  .callout { background: var(--ink); color: var(--paper); border-radius: 4px; padding: 30px 32px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+  @media (prefers-color-scheme: dark) { .callout { background: var(--gold); color: var(--ink); } }
+  :root[data-theme="dark"] .callout { background: var(--gold); color: var(--ink); }
+  @media (max-width: 700px) { .callout { grid-template-columns: 1fr; text-align: left; } }
+  .callout h3 { margin: 0 0 6px; font-size: 21px; }
+  .callout p { margin: 0; opacity: 0.85; font-size: 14.5px; max-width: 50ch; }
+  .callout .btn-primary { background: var(--gold); color: var(--ink); white-space: nowrap; }
+  :root[data-theme="dark"] .callout .btn-primary { background: var(--ink); color: var(--paper); }
+
+  .disclaimer { font-size: 12.5px; color: var(--slate); background: var(--paper-dim); border: 1px solid var(--line-dark); border-radius: 4px; padding: 16px 18px; margin-top: 40px; }
+
+  footer { padding: 46px 0 60px; }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; font-size: 13px; color: var(--slate); }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<div class="ticker-bar">
+  <div class="ticker-track" id="tickerTrack">
+    <span>S&amp;P 500 <b class="down">6,845.50 −0.74%</b></span>
+    <span>DOW <b class="down">48,063.29 −0.63%</b></span>
+    <span>NASDAQ <b class="down">23,241.99 −0.76%</b></span>
+    <span>FTSE 100 <b class="up">10,021.03 +0.90%</b></span>
+    <span>DAX <b class="up">24,597.10 +0.44%</b></span>
+    <span>CAC 40 <b class="up">8,206.50 +0.70%</b></span>
+    <span>NIKKEI 225 <b class="up">+0.31%</b></span>
+    <span>GOLD (XAU) <b class="up">+0.9%</b></span>
+    <span>WTI CRUDE <b class="down">−1.2%</b></span>
+    <span>EUR/USD <b class="up">1.0862</b></span>
+    <span>GBP/USD <b class="down">1.2634</b></span>
+    <span>BTC/USD <b class="up">+2.1%</b></span>
+    <!-- duplicate for seamless loop -->
+    <span>S&amp;P 500 <b class="down">6,845.50 −0.74%</b></span>
+    <span>DOW <b class="down">48,063.29 −0.63%</b></span>
+    <span>NASDAQ <b class="down">23,241.99 −0.76%</b></span>
+    <span>FTSE 100 <b class="up">10,021.03 +0.90%</b></span>
+    <span>DAX <b class="up">24,597.10 +0.44%</b></span>
+    <span>CAC 40 <b class="up">8,206.50 +0.70%</b></span>
+    <span>NIKKEI 225 <b class="up">+0.31%</b></span>
+    <span>GOLD (XAU) <b class="up">+0.9%</b></span>
+    <span>WTI CRUDE <b class="down">−1.2%</b></span>
+    <span>EUR/USD <b class="up">1.0862</b></span>
+    <span>GBP/USD <b class="down">1.2634</b></span>
+    <span>BTC/USD <b class="up">+2.1%</b></span>
+  </div>
+</div>
+
+<header class="site">
+  <nav class="wrap">
+    <a href="#top" class="brand">Ledger <span class="amp">&amp;</span> Line</a>
+    <ul class="navlinks" id="navlinks">
+      <li><a href="#guides">Guidelines</a></li>
+      <li><a href="#markets">Markets</a></li>
+      <li><a href="#courses">Free Courses</a></li>
+      <li><a href="#platforms">Platforms</a></li>
+      <li><a href="#commodities">Commodities &amp; FX</a></li>
+      <li><a href="#process">How to Buy &amp; Sell</a></li>
+    </ul>
+    <button class="navtoggle" id="navToggle" aria-label="Menu">&#9776;</button>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="kicker">A CLEAR HEAD BEFORE YOU PUT MONEY DOWN</p>
+        <h1>Understand a market before you enter it.</h1>
+        <p class="lede">Free guides, structured courses and daily market context for stocks, forex and commodities — written for people starting from zero, not for people trying to sell you a signal group.</p>
+        <div class="cta-row">
+          <a href="#courses" class="btn btn-primary">Start the free course</a>
+          <a href="#guides" class="btn btn-ghost">Read the guidelines</a>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="row"><span class="label">S&amp;P 500</span><span class="val down">−0.74%</span></div>
+        <div class="row"><span class="label">FTSE 100</span><span class="val up">+0.90%</span></div>
+        <div class="row"><span class="label">Gold (XAU/USD)</span><span class="val up">+0.9%</span></div>
+        <div class="row"><span class="label">EUR/USD</span><span class="val up">1.0862</span></div>
+        <div class="row"><span class="label">Bitcoin</span><span class="val up">+2.1%</span></div>
+        <p class="foot">Snapshot for illustration. Wire this panel to a live feed (see footer note) before publishing real figures.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="guides">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Investment guidelines</h2>
+          <p>The things worth knowing before your first trade — not after your first loss.</p>
+        </div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">01</div>
+        <div><h3>Decide what you're actually doing</h3><p>Investing (holding assets for years, aiming to grow wealth slowly) and trading (buying and selling over days, weeks or minutes, aiming to profit from price movement) require different skills, time and temperament. Most beginners think they want to trade and would be better served investing first.</p></div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">02</div>
+        <div><h3>Only risk money you can lose completely</h3><p>Markets can take your capital to zero, especially with leverage. Never trade rent money, emergency funds, or borrowed money. If you can't afford to lose it, it doesn't belong in a trading account.</p></div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">03</div>
+        <div><h3>Position size before you pick direction</h3><p>Before asking "will this go up," ask "how much of my account am I willing to lose if I'm wrong." A common starting rule is risking no more than 1–2% of total capital on a single position.</p></div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">04</div>
+        <div><h3>Diversify across, not just within</h3><p>Owning ten tech stocks isn't diversification — it's concentration with extra steps. Spread exposure across sectors, geographies (US, UK, emerging markets) and asset classes (equities, bonds, commodities).</p></div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">05</div>
+        <div><h3>Recognise a scam before it recognises you</h3><p>Guaranteed returns, pressure to deposit quickly, unregulated platforms, and "recovery agents" who ask for an upfront fee are the four recurring patterns behind almost every trading scam. A regulated broker will never guarantee profit.</p></div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">06</div>
+        <div><h3>Write a plan, then follow it</h3><p>Decide your entry, exit, stop-loss and position size before you open a trade — not while it's moving against you. Emotional decisions made mid-trade are the single biggest destroyer of capital for new traders.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="markets">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Markets today</h2>
+          <p>A cross-market snapshot — US, UK and beyond — so you're not walking in blind.</p>
+        </div>
+      </div>
+      <div class="market-cols">
+        <div class="market-col">
+          <h3>United States</h3>
+          <div class="market-row"><span class="name">S&amp;P 500</span><span class="chg down">−0.74%</span></div>
+          <div class="market-row"><span class="name">Dow Jones</span><span class="chg down">−0.63%</span></div>
+          <div class="market-row"><span class="name">Nasdaq Composite</span><span class="chg down">−0.76%</span></div>
+          <div class="market-row"><span class="name">Russell 2000</span><span class="chg down">−0.75%</span></div>
+          <div class="market-row"><span class="name">VIX (volatility)</span><span class="chg down">−1.07%</span></div>
+        </div>
+        <div class="market-col">
+          <h3>United Kingdom &amp; Europe</h3>
+          <div class="market-row"><span class="name">FTSE 100</span><span class="chg up">+0.90%</span></div>
+          <div class="market-row"><span class="name">DAX (Germany)</span><span class="chg up">+0.44%</span></div>
+          <div class="market-row"><span class="name">CAC 40 (France)</span><span class="chg up">+0.70%</span></div>
+          <div class="market-row"><span class="name">EURO STOXX 50</span><span class="chg up">+0.69%</span></div>
+          <div class="market-row"><span class="name">GBP/USD</span><span class="chg down">1.2634</span></div>
+        </div>
+        <div class="market-col">
+          <h3>Commodities &amp; Crypto</h3>
+          <div class="market-row"><span class="name">Gold (XAU/USD)</span><span class="chg up">+0.9%</span></div>
+          <div class="market-row"><span class="name">WTI Crude Oil</span><span class="chg down">−1.2%</span></div>
+          <div class="market-row"><span class="name">Silver</span><span class="chg up">+0.6%</span></div>
+          <div class="market-row"><span class="name">Bitcoin</span><span class="chg up">+2.1%</span></div>
+          <div class="market-row"><span class="name">Ethereum</span><span class="chg up">+1.4%</span></div>
+        </div>
+      </div>
+      <p class="disclaimer">These figures are placeholder/sample values to show the layout — this static page can't pull live prices on its own. To make this section genuinely live, embed a free widget (TradingView's ticker and market-overview widgets work well and cost nothing) once the site is deployed on your own domain, or connect a market-data API. Ask me and I'll wire it in.</p>
+    </div>
+  </section>
+
+  <section id="courses">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Free courses</h2>
+          <p>Self-paced tracks. No signup, no upsell to unlock lesson two.</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="course-card">
+          <div class="course-head">
+            <div class="level">BEGINNER</div>
+            <h3>Markets 101</h3>
+            <p>What a stock, bond and index actually are.</p>
+          </div>
+          <div class="course-body">
+            <ol>
+              <li>How stock markets work</li>
+              <li>Stocks vs. bonds vs. funds</li>
+              <li>Reading a price chart</li>
+              <li>What moves prices (earnings, rates, news)</li>
+              <li>Opening your first brokerage account</li>
+            </ol>
+          </div>
+        </div>
+        <div class="course-card">
+          <div class="course-head">
+            <div class="level">INTERMEDIATE</div>
+            <h3>Risk &amp; Strategy</h3>
+            <p>The part that separates hobbyists from survivors.</p>
+          </div>
+          <div class="course-body">
+            <ol>
+              <li>Position sizing and stop-losses</li>
+              <li>Technical analysis basics: support, resistance, trend</li>
+              <li>Fundamental analysis: reading a balance sheet</li>
+              <li>Building a watchlist</li>
+              <li>Journaling and reviewing your trades</li>
+            </ol>
+          </div>
+        </div>
+        <div class="course-card">
+          <div class="course-head">
+            <div class="level">FOCUS TRACK</div>
+            <h3>Forex &amp; Commodities</h3>
+            <p>Currency pairs, gold, oil — how they differ from stocks.</p>
+          </div>
+          <div class="course-body">
+            <ol>
+              <li>How currency pairs are quoted</li>
+              <li>Pips, lots and leverage explained</li>
+              <li>Why gold and oil move on different news</li>
+              <li>Spot vs. futures vs. CFDs</li>
+              <li>Session timing: London, New York, Tokyo</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="platforms">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Where people actually invest</h2>
+          <p>A plain comparison of platform types — not a ranking of which pays the best commission.</p>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Platform type</th><th>Best for</th><th>Typical minimum</th><th>Watch out for</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Regulated stock brokers</strong><br><span class="tag">e.g. long-term investing</span></td>
+              <td>Buying real shares, ETFs, index funds</td>
+              <td>Often $0–$100</td>
+              <td>Currency conversion fees on foreign stocks</td>
+            </tr>
+            <tr>
+              <td><strong>Forex/CFD brokers</strong><br><span class="tag">leverage available</span></td>
+              <td>Currency pairs, short-term trading</td>
+              <td>$50–$250</td>
+              <td>Leverage magnifies losses as fast as gains</td>
+            </tr>
+            <tr>
+              <td><strong>Commodity &amp; futures brokers</strong></td>
+              <td>Gold, oil, agricultural contracts</td>
+              <td>Varies widely, often higher</td>
+              <td>Contract expiry dates, margin calls</td>
+            </tr>
+            <tr>
+              <td><strong>Robo-advisors</strong></td>
+              <td>Hands-off, automated portfolios</td>
+              <td>Often $0–$500</td>
+              <td>Less control over individual holdings</td>
+            </tr>
+            <tr>
+              <td><strong>Crypto exchanges</strong></td>
+              <td>Digital assets</td>
+              <td>Often no minimum</td>
+              <td>Regulation varies hugely by country</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="disclaimer">Placeholder rows — this is where your specific, regulated broker partners go once you've picked your affiliate program (e.g. a licensed forex broker, a stock broker with an affiliate scheme). Always confirm a broker is regulated in the visitor's country before recommending it.</p>
+    </div>
+  </section>
+
+  <section id="commodities">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Commodities &amp; forex, briefly</h2>
+          <p>Two asset classes that move on different logic than stocks.</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Gold &amp; precious metals</h3>
+          <p>Tends to rise when investors are nervous — inflation fears, currency weakness, geopolitical tension. Traded as spot, futures, ETFs or physical bullion.</p>
+        </div>
+        <div class="card">
+          <h3>Oil &amp; energy</h3>
+          <p>Driven by supply decisions (OPEC+), geopolitical conflict near production regions, and global demand — especially from the US and China.</p>
+        </div>
+        <div class="card">
+          <h3>Forex (currency pairs)</h3>
+          <p>Moves on interest rate decisions, inflation data and central bank tone. The most liquid market in the world, open nearly 24 hours across global sessions.</p>
+        </div>
+        <div class="card">
+          <h3>Agricultural commodities</h3>
+          <p>Wheat, coffee, soybeans — sensitive to weather, harvest reports and export restrictions rather than corporate earnings.</p>
+        </div>
+        <div class="card">
+          <h3>Leverage, explained simply</h3>
+          <p>Borrowed exposure that multiplies both gains and losses. 10x leverage means a 5% adverse move can wipe out half your position.</p>
+        </div>
+        <div class="card">
+          <h3>Correlation across assets</h3>
+          <p>A weaker US dollar often lifts gold and commodities priced in dollars — one reason to watch currency markets even if you only trade stocks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>How to actually buy and sell</h2>
+          <p>The mechanical process, the same shape across stocks, forex and commodities.</p>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div><h3>Choose a regulated platform</h3><p>Confirm it's licensed by a real regulator (SEC/FINRA in the US, FCA in the UK, ASIC in Australia, etc.) before depositing anything.</p></div>
+        </div>
+        <div class="step">
+          <div><h3>Fund the account</h3><p>Start with an amount you're fully prepared to lose. Most regulated brokers support bank transfer, card, or e-wallet funding.</p></div>
+        </div>
+        <div class="step">
+          <div><h3>Research before you click buy</h3><p>Check the asset's recent price action, upcoming news or earnings, and how it fits your existing portfolio and risk tolerance.</p></div>
+        </div>
+        <div class="step">
+          <div><h3>Set your order type</h3><p>A market order fills instantly at current price. A limit order only fills at your chosen price or better — useful for controlling entry.</p></div>
+        </div>
+        <div class="step">
+          <div><h3>Set a stop-loss before you enter</h3><p>Decide the price at which you'll exit if the trade goes wrong — and set it at the same time you open the position, not after.</p></div>
+        </div>
+        <div class="step">
+          <div><h3>Exit on plan, not on emotion</h3><p>Sell (or close) at your target profit or your stop-loss level — the level you decided before the trade started moving your feelings around.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="callout">
+        <div>
+          <h3>Get the weekly market brief</h3>
+          <p>One short email — no signals, no "guaranteed" anything, just the week's key US, UK and commodity moves explained plainly.</p>
+        </div>
+        <a href="#" class="btn btn-primary">Join free</a>
+      </div>
+      <p class="disclaimer"><strong>Not financial advice.</strong> Everything on this site is for educational purposes only. Trading and investing carry risk of loss, including loss of your entire deposit, and leveraged products can lose more than your initial deposit. Past performance does not predict future results. Always do your own research and consider speaking with a licensed financial advisor before investing.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ledger &amp; Line — trading and investing, explained plainly.</div>
+    <div><a href="#guides">Guidelines</a> &nbsp;·&nbsp; <a href="#courses">Courses</a> &nbsp;·&nbsp; <a href="#platforms">Platforms</a> &nbsp;·&nbsp; <a href="#process">How-to</a></div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('navToggle').addEventListener('click', function() {
+    document.getElementById('navlinks').classList.toggle('open');
+  });
+</script>
+</body>
+</html>
