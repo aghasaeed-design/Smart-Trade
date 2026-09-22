@@ -14,8 +14,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Ledger & Line">
-<link rel="apple-touch-icon" href="icon.svg">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="icon" href="logo.png" type="image/png">
 <style>
   :root {
     --ink: #0E1A2B;
@@ -80,12 +80,21 @@
   @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; overflow-x: auto; } }
 
+  /* ---- Breaking news strip ---- */
+  .breaking-strip { background: #14213A; border-bottom: 1px solid var(--gold); position: sticky; top: 34px; z-index: 48; }
+  @media (prefers-color-scheme: dark) { .breaking-strip { background: #0B121F; } }
+  :root[data-theme="dark"] .breaking-strip { background: #0B121F; }
+  .breaking-strip .wrap { display: flex; align-items: center; gap: 14px; padding: 6px 24px; }
+  .breaking-strip .badge { background: var(--down); color: #fff; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; }
+  .breaking-strip .badge::before { content: "● "; }
+  .breaking-strip .widget-slot { flex: 1; overflow: hidden; max-height: 34px; }
+
   /* ---- Nav ---- */
   header.site {
     background: var(--paper);
     border-bottom: 1px solid var(--line-dark);
     position: sticky;
-    top: 34px;
+    top: 68px;
     z-index: 49;
   }
   nav.wrap { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; }
@@ -258,9 +267,32 @@
   </div>
 </div>
 
+<div class="breaking-strip">
+  <div class="wrap">
+    <span class="badge">Breaking</span>
+    <div class="widget-slot">
+      <!-- TradingView compact Top Stories widget (live, free) -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+        {
+          "feedMode": "all_symbols",
+          "isTransparent": true,
+          "displayMode": "compact",
+          "width": "100%",
+          "height": 200,
+          "colorTheme": "dark",
+          "locale": "en"
+        }
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+
 <header class="site">
   <nav class="wrap">
-    <a href="#top" class="brand">Ledger <span class="amp">&amp;</span> Line</a>
+    <a href="#top" class="brand"><img src="logo.png" alt="Smart Trade" style="height:40px;width:auto;"></a>
     <ul class="navlinks" id="navlinks">
       <li><a href="#guides">Guidelines</a></li>
       <li><a href="#markets">Markets</a></li>
