@@ -1,0 +1,19 @@
+{
+  "name": "Ledger & Line — Trading & Investing",
+  "short_name": "Ledger & Line",
+  "description": "Free guides, courses, market news and broker comparisons for people learning to trade and invest.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0E1A2B",
+  "theme_color": "#0E1A2B",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
