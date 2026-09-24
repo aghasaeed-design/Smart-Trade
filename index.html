@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ledger &amp; Line — Trading &amp; Investing, Explained</title>
+<meta name="description" content="Free guides, courses, market news and broker comparisons for people learning to trade and invest.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0E1A2B">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ledger & Line">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="icon" href="logo.png" type="image/png">
+<style>
+  :root {
+    --ink: #0E1A2B;
+    --ink-soft: #172436;
+    --paper: #F6F3EC;
+    --paper-dim: #EAE5D8;
+    --gold: #C9A227;
+    --gold-bright: #E6C158;
+    --up: #3F7D5C;
+    --down: #B23A2E;
+    --slate: #5C6B7A;
+    --line: rgba(255,255,255,0.12);
+    --line-dark: rgba(14,26,43,0.12);
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html { scroll-padding-top: 64px; scroll-behavior: smooth; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --paper: #0E1A2B; --paper-dim: #172436; --ink: #F6F3EC; --line-dark: rgba(246,243,236,0.14); }
+  }
+  :root[data-theme="dark"] { --paper: #0E1A2B; --paper-dim: #172436; --ink: #F6F3EC; --line-dark: rgba(246,243,236,0.14); }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif;
+    line-height: 1.55;
+  }
+  h1, h2, h3, .display { font-family: 'Fraunces', Georgia, serif; letter-spacing: -0.01em; }
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  img, svg { max-width: 100%; }
+
+  /* ---- Ticker ---- */
+  .ticker-bar {
+    background: var(--ink);
+    color: var(--paper);
+    overflow: hidden;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--gold);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  @media (prefers-color-scheme: dark) { .ticker-bar { background: #070D16; } }
+  :root[data-theme="dark"] .ticker-bar { background: #070D16; }
+  .ticker-track {
+    display: inline-flex;
+    gap: 40px;
+    padding: 9px 0;
+    animation: scroll 38s linear infinite;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+  }
+  .ticker-track span { display: inline-flex; align-items: center; gap: 8px; opacity: 0.95; }
+  .ticker-track .up { color: #7FD9A6; }
+  .ticker-track .down { color: #F0917F; }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; overflow-x: auto; } }
+
+  /* ---- Breaking news strip ---- */
+  .breaking-strip { background: #14213A; border-bottom: 1px solid var(--gold); position: relative; }
+  @media (prefers-color-scheme: dark) { .breaking-strip { background: #0B121F; } }
+  :root[data-theme="dark"] .breaking-strip { background: #0B121F; }
+  .breaking-strip .wrap { display: flex; align-items: center; gap: 14px; padding: 8px 24px; }
+  .breaking-strip .badge { background: var(--down); color: #fff; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; align-self: flex-start; margin-top: 6px; }
+  .breaking-strip .badge::before { content: "● "; }
+  .breaking-strip .widget-slot { flex: 1; overflow: hidden; height: 130px; }
+
+  /* ---- Nav ---- */
+  header.site {
+    background: var(--paper);
+    border-bottom: 1px solid var(--line-dark);
+    position: sticky;
+    top: 34px;
+    z-index: 49;
+  }
+  nav.wrap { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; }
+  .brand { display: flex; align-items: baseline; gap: 8px; font-family: 'Fraunces', serif; font-weight: 600; font-size: 21px; text-decoration: none; }
+  .brand .amp { color: var(--gold); }
+  .navlinks { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-size: 14.5px; }
+  .navlinks a { text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; }
+  .navlinks a:hover { border-color: var(--gold); }
+  .navtoggle { display: none; background: none; border: 1px solid var(--line-dark); border-radius: 6px; padding: 8px 10px; font-size: 20px; color: var(--ink); }
+  @media (max-width: 760px) {
+    .navlinks { display: none; }
+    .navtoggle { display: block; }
+    .navlinks.open { display: flex; flex-direction: column; position: absolute; left: 0; right: 0; top: 100%; background: var(--paper); padding: 16px 24px 22px; border-bottom: 1px solid var(--line-dark); gap: 16px; }
+  }
+
+  /* ---- Hero ---- */
+  .hero { padding: 76px 0 64px; border-bottom: 1px solid var(--line-dark); }
+  .hero .wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: end; }
+  @media (max-width: 860px) { .hero .wrap { grid-template-columns: 1fr; } .hero { padding: 48px 0 44px; } }
+  .kicker { font-size: 13.5px; color: var(--gold); font-weight: 600; margin: 0 0 14px; }
+  .hero h1 { font-size: clamp(34px, 5.2vw, 56px); line-height: 1.06; margin: 0 0 22px; font-weight: 600; max-width: 15ch; }
+  .hero p.lede { font-size: 18px; color: var(--slate); max-width: 46ch; margin: 0 0 30px; }
+  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 13px 24px; border-radius: 3px; font-weight: 600; font-size: 14.5px; text-decoration: none; border: 1px solid transparent; }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  :root[data-theme="dark"] .btn-primary, @media (prefers-color-scheme: dark) { }
+  .btn-primary:hover { background: var(--gold); color: var(--ink); }
+  .btn-ghost { border-color: var(--line-dark); }
+  .btn-ghost:hover { border-color: var(--gold); }
+  .hero-panel { border: 1px solid var(--line-dark); border-radius: 4px; padding: 24px; background: var(--paper-dim); }
+  .hero-panel .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line-dark); font-size: 14px; }
+  .hero-panel .row:last-child { border-bottom: none; }
+  .hero-panel .label { color: var(--slate); }
+  .hero-panel .val.up { color: var(--up); font-family: 'IBM Plex Mono', monospace; }
+  .hero-panel .val.down { color: var(--down); font-family: 'IBM Plex Mono', monospace; }
+  .hero-panel .foot { font-size: 12px; color: var(--slate); margin-top: 14px; }
+
+  /* ---- Sections ---- */
+  section { padding: 64px 0; border-bottom: 1px solid var(--line-dark); }
+  section:last-of-type { border-bottom: none; }
+  .section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 34px; flex-wrap: wrap; }
+  .section-head h2 { font-size: 30px; margin: 0; font-weight: 600; }
+  .section-head p { color: var(--slate); margin: 6px 0 0; max-width: 52ch; }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  @media (max-width: 860px) { .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+  .card { border: 1px solid var(--line-dark); padding: 24px; border-radius: 4px; }
+  .card h3 { font-size: 18px; margin: 0 0 8px; font-weight: 600; }
+  .card p { font-size: 14.5px; color: var(--slate); margin: 0; }
+
+  .guide-item { display: grid; grid-template-columns: 44px 1fr; gap: 18px; padding: 22px 0; border-bottom: 1px solid var(--line-dark); }
+  .guide-item:last-child { border-bottom: none; }
+  .guide-num { font-family: 'IBM Plex Mono', monospace; color: var(--gold); font-size: 14px; padding-top: 3px; }
+  .guide-item h3 { margin: 0 0 6px; font-size: 18px; }
+  .guide-item p { margin: 0; color: var(--slate); font-size: 15px; max-width: 62ch; }
+
+  table.compare { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  table.compare th, table.compare td { text-align: left; padding: 14px 12px; border-bottom: 1px solid var(--line-dark); vertical-align: top; }
+  table.compare th { color: var(--slate); font-weight: 600; font-size: 13px; text-transform: none; }
+  table.compare tr:hover td { background: var(--paper-dim); }
+  .table-scroll { overflow-x: auto; }
+  .tag { display: inline-block; font-size: 11.5px; padding: 3px 8px; border-radius: 12px; background: var(--paper-dim); border: 1px solid var(--line-dark); margin-right: 6px; }
+
+  .course-card { border: 1px solid var(--line-dark); border-radius: 4px; overflow: hidden; }
+  .course-head { padding: 20px 22px; background: var(--paper-dim); }
+  .course-head .level { font-size: 12px; color: var(--gold); font-weight: 600; }
+  .course-head h3 { margin: 6px 0 4px; font-size: 19px; }
+  .course-head p { margin: 0; color: var(--slate); font-size: 14px; }
+  .course-body { padding: 18px 22px 22px; }
+  .course-body ol { margin: 0; padding-left: 20px; font-size: 14px; color: var(--ink); }
+  .course-body li { margin-bottom: 8px; }
+
+  .market-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 860px) { .market-cols { grid-template-columns: 1fr; } }
+  .market-col h3 { font-size: 16px; margin: 0 0 14px; padding-bottom: 10px; border-bottom: 2px solid var(--gold); }
+  .market-row { display: flex; justify-content: space-between; font-size: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-dark); }
+  .market-row .name { color: var(--slate); }
+  .market-row .chg.up { color: var(--up); font-family: 'IBM Plex Mono', monospace; }
+  .market-row .chg.down { color: var(--down); font-family: 'IBM Plex Mono', monospace; }
+
+  .steps { counter-reset: step; }
+  .step { display: grid; grid-template-columns: 56px 1fr; gap: 20px; padding: 26px 0; border-bottom: 1px solid var(--line-dark); }
+  .step:last-child { border-bottom: none; }
+  .step::before { counter-increment: step; content: counter(step, decimal-leading-zero); font-family: 'IBM Plex Mono', monospace; color: var(--gold); font-size: 22px; }
+  .step h3 { margin: 0 0 6px; font-size: 17px; }
+  .step p { margin: 0; color: var(--slate); font-size: 14.5px; max-width: 64ch; }
+
+  .callout { background: var(--ink); color: var(--paper); border-radius: 4px; padding: 30px 32px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+  @media (prefers-color-scheme: dark) { .callout { background: var(--gold); color: var(--ink); } }
+  :root[data-theme="dark"] .callout { background: var(--gold); color: var(--ink); }
+  @media (max-width: 700px) { .callout { grid-template-columns: 1fr; text-align: left; } }
+  .callout h3 { margin: 0 0 6px; font-size: 21px; }
+  .callout p { margin: 0; opacity: 0.85; font-size: 14.5px; max-width: 50ch; }
+  .callout .btn-primary { background: var(--gold); color: var(--ink); white-space: nowrap; }
+  :root[data-theme="dark"] .callout .btn-primary { background: var(--ink); color: var(--paper); }
+
+  .disclaimer { font-size: 12.5px; color: var(--slate); background: var(--paper-dim); border: 1px solid var(--line-dark); border-radius: 4px; padding: 16px 18px; margin-top: 40px; }
+
+  /* ---- Stats bar ---- */
+  .stats-bar { background: var(--ink); color: var(--paper); border-bottom: 1px solid var(--gold); }
+  @media (prefers-color-scheme: dark) { .stats-bar { background: #070D16; } }
+  :root[data-theme="dark"] .stats-bar { background: #070D16; }
+  .stats-bar .wrap { display: flex; gap: 28px; padding: 9px 24px; font-size: 13px; align-items: center; flex-wrap: wrap; }
+  .stats-bar .stat { display: flex; gap: 6px; align-items: center; opacity: 0.92; }
+  .stats-bar .stat b { font-family: 'IBM Plex Mono', monospace; color: var(--gold-bright); }
+  .stats-bar .spacer { flex: 1; }
+  .stats-bar .install-btn { background: var(--gold); color: var(--ink); border: none; padding: 6px 14px; border-radius: 3px; font-weight: 600; font-size: 12.5px; cursor: pointer; display: none; }
+  .stats-bar .install-btn.show { display: inline-block; }
+
+  /* ---- Auth ---- */
+  .auth-btn { background: none; border: 1px solid var(--line-dark); border-radius: 3px; padding: 9px 16px; font-size: 13.5px; font-weight: 600; cursor: pointer; color: var(--ink); font-family: inherit; }
+  .auth-btn:hover { border-color: var(--gold); }
+  .user-chip { display: none; align-items: center; gap: 8px; font-size: 13.5px; }
+  .user-chip img { width: 26px; height: 26px; border-radius: 50%; }
+  .user-chip .logout { color: var(--slate); text-decoration: underline; cursor: pointer; font-size: 12px; }
+
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(14,26,43,0.6); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal-box { background: var(--paper); border-radius: 6px; padding: 32px; max-width: 380px; width: 100%; position: relative; }
+  .modal-box h3 { margin: 0 0 6px; font-size: 22px; }
+  .modal-box p.sub { color: var(--slate); font-size: 14px; margin: 0 0 22px; }
+  .modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--slate); }
+  #googleSignInBtn { margin-bottom: 16px; display: flex; justify-content: center; }
+  .modal-divider { text-align: center; color: var(--slate); font-size: 12px; margin: 16px 0; position: relative; }
+  .modal-divider::before, .modal-divider::after { content: ""; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--line-dark); }
+  .modal-divider::before { left: 0; } .modal-divider::after { right: 0; }
+  .modal-box input { width: 100%; padding: 11px 12px; border: 1px solid var(--line-dark); border-radius: 3px; margin-bottom: 10px; font-size: 14px; font-family: inherit; background: var(--paper); color: var(--ink); }
+  .modal-box .btn-primary { width: 100%; border: none; cursor: pointer; margin-top: 4px; }
+  .modal-toggle { text-align: center; font-size: 13px; margin-top: 14px; color: var(--slate); }
+  .modal-toggle a { color: var(--gold); text-decoration: underline; cursor: pointer; }
+  .modal-error { color: var(--down); font-size: 12.5px; margin: 0 0 10px; display: none; }
+  .setup-note { font-size: 11.5px; color: var(--slate); background: var(--paper-dim); border-radius: 3px; padding: 10px 12px; margin-top: 18px; line-height: 1.5; }
+
+  footer { padding: 46px 0 60px; }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; font-size: 13px; color: var(--slate); }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<div class="ticker-bar">
+  <!-- TradingView Ticker Tape Widget (live, free) -->
+  <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    {
+      "symbols": [
+        {"proName": "FOREXCOM:SPXUSD", "title": "S&P 500"},
+        {"proName": "FOREXCOM:DJI", "title": "Dow Jones"},
+        {"proName": "FOREXCOM:NSXUSD", "title": "Nasdaq 100"},
+        {"proName": "FTSE:UKX", "title": "FTSE 100"},
+        {"proName": "XETR:DAX", "title": "DAX"},
+        {"proName": "OANDA:XAUUSD", "title": "Gold"},
+        {"proName": "TVC:USOIL", "title": "WTI Crude"},
+        {"proName": "FX:EURUSD", "title": "EUR/USD"},
+        {"proName": "FX:GBPUSD", "title": "GBP/USD"},
+        {"proName": "BITSTAMP:BTCUSD", "title": "Bitcoin"}
+      ],
+      "showSymbolLogo": false,
+      "colorTheme": "dark",
+      "isTransparent": true,
+      "displayMode": "compact",
+      "locale": "en"
+    }
+    </script>
+  </div>
+</div>
+
+<div class="breaking-strip">
+  <div class="wrap">
+    <span class="badge">Breaking</span>
+    <div class="widget-slot">
+      <!-- TradingView compact Top Stories widget (live, free) -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+        {
+          "feedMode": "all_symbols",
+          "isTransparent": true,
+          "displayMode": "compact",
+          "width": "100%",
+          "height": 260,
+          "colorTheme": "dark",
+          "locale": "en"
+        }
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<header class="site">
+  <nav class="wrap">
+    <a href="#top" class="brand"><img src="logo.png" alt="Smart Trade" style="height:40px;width:auto;"></a>
+    <ul class="navlinks" id="navlinks">
+      <li><a href="#guides">Guidelines</a></li>
+      <li><a href="#markets">Markets</a></li>
+      <li><a href="#courses">Free Courses</a></li>
+      <li><a href="#platforms">Platforms</a></li>
+      <li><a href="#commodities">Commodities &amp; FX</a></li>
+      <li><a href="#process">How to Buy &amp; Sell</a></li>
+    </ul>
+    <button class="auth-btn" id="signInNavBtn">Sign in</button>
+    <div class="user-chip" id="userChip">
+      <img id="userChipAvatar" src="" alt="">
+      <span id="userChipName"></span>
+      <span class="logout" id="signOutBtn">Sign out</span>
+    </div>
+    <button class="navtoggle" id="navToggle" aria-label="Menu">&#9776;</button>
+  </nav>
+</header>
+
+<div class="stats-bar">
+  <div class="wrap">
+    <span class="stat">👀 <b id="visitorCount">—</b> visitors</span>
+    <span class="stat">🤝 <b id="memberCount">—</b> traders joined</span>
+    <span class="spacer"></span>
+    <button class="install-btn" id="installBtn">⬇ Install app</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="authModal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <h3 id="modalTitle">Join Ledger &amp; Line</h3>
+    <p class="sub">Free account — save guides, track your course progress.</p>
+    <p class="modal-error" id="modalError"></p>
+    <div id="googleSignInBtn"></div>
+    <div class="modal-divider">or use email</div>
+    <input type="email" id="emailInput" placeholder="Email address">
+    <input type="password" id="passwordInput" placeholder="Password">
+    <button class="btn btn-primary" id="emailSubmitBtn">Sign in</button>
+    <p class="modal-toggle">No account? <a id="modalToggleLink">Create one</a></p>
+    <p class="setup-note" id="setupNote">Sign-in isn't wired up yet — add your free Firebase config in the script near the bottom of index.html. See the comment block marked FIREBASE CONFIG.</p>
+  </div>
+</div>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="kicker">A CLEAR HEAD BEFORE YOU PUT MONEY DOWN</p>
+        <h1>Understand a market before you enter it.</h1>
+        <p class="lede">Free guides, structured courses and daily market context for stocks, forex and commodities — written for people starting from zero, not for people trying to sell you a signal group.</p>
+        <div class="cta-row">
+          <a href="#courses" class="btn btn-primary">Start the free course</a>
+          <a href="#guides" class="btn btn-ghost">Read the guidelines</a>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <!-- TradingView Quotes Widget (live, free) -->
+        <div class="tradingview-widget-container">
+          <div class="tradingview-widget-container__widget"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js" async>
+          {
+            "width": "100%",
+            "height": "300",
+            "symbolsGroups": [
+              {
+                "name": "Key markets",
+                "originalName": "Key markets",
+                "symbols": [
+                  {"name": "FOREXCOM:SPXUSD", "displayName": "S&P 500"},
+                  {"name": "FTSE:UKX", "displayName": "FTSE 100"},
+                  {"name": "OANDA:XAUUSD", "displayName": "Gold (XAU/USD)"},
+                  {"name": "FX:EURUSD", "displayName": "EUR/USD"},
+                  {"name": "BITSTAMP:BTCUSD", "displayName": "Bitcoin"}
+                ]
+              }
+            ],
+            "showSymbolLogo": false,
+            "isTransparent": true,
+            "colorTheme": "dark",
+            "locale": "en",
+            "backgroundColor": "rgba(0,0,0,0)"
+          }
+          </script>
+        </div>
+        <p class="foot">Live data via TradingView.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="guides">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Investment guidelines</h2>
+          <p>The things worth knowing before your first trade — not after your first loss.</p>
+        </div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">01</div>
+        <div><h3>Decide what you're actually doing</h3><p>Investing (holding assets for years, aiming to grow wealth slowly) and trading (buying and selling over days, weeks or minutes, aiming to profit from price movement) require different skills, time and temperament. Most beginners think they want to trade and would be better served investing first.</p></div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">02</div>
+        <div><h3>Only risk money you can lose completely</h3><p>Markets can take your capital to zero, especially with leverage. Never trade rent money, emergency funds, or borrowed money. If you can't afford to lose it, it doesn't belong in a trading account.</p></div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">03</div>
+        <div><h3>Position size before you pick direction</h3><p>Before asking "will this go up," ask "how much of my account am I willing to lose if I'm wrong." A common starting rule is risking no more than 1–2% of total capital on a single position.</p></div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">04</div>
+        <div><h3>Diversify across, not just within</h3><p>Owning ten tech stocks isn't diversification — it's concentration with extra steps. Spread exposure across sectors, geographies (US, UK, emerging markets) and asset classes (equities, bonds, commodities).</p></div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">05</div>
+        <div><h3>Recognise a scam before it recognises you</h3><p>Guaranteed returns, pressure to deposit quickly, unregulated platforms, and "recovery agents" who ask for an upfront fee are the four recurring patterns behind almost every trading scam. A regulated broker will never guarantee profit.</p></div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">06</div>
+        <div><h3>Write a plan, then follow it</h3><p>Decide your entry, exit, stop-loss and position size before you open a trade — not while it's moving against you. Emotional decisions made mid-trade are the single biggest destroyer of capital for new traders.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="markets">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Markets today</h2>
+          <p>A cross-market snapshot — US, UK and beyond — so you're not walking in blind.</p>
+        </div>
+      </div>
+      <!-- TradingView Market Overview Widget (live, free) -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+        {
+          "colorTheme": "light",
+          "dateRange": "12M",
+          "showChart": true,
+          "locale": "en",
+          "largeChartUrl": "",
+          "isTransparent": false,
+          "showSymbolLogo": true,
+          "showFloatingTooltip": false,
+          "width": "100%",
+          "height": "500",
+          "plotLineColorGrowing": "rgba(63, 125, 92, 1)",
+          "plotLineColorFalling": "rgba(178, 58, 46, 1)",
+          "gridLineColor": "rgba(240, 243, 250, 0)",
+          "scaleFontColor": "rgba(120, 120, 120, 1)",
+          "belowLineFillColorGrowing": "rgba(63, 125, 92, 0.12)",
+          "belowLineFillColorFalling": "rgba(178, 58, 46, 0.12)",
+          "symbolActiveColor": "rgba(201, 162, 39, 0.12)",
+          "tabs": [
+            {
+              "title": "United States",
+              "symbols": [
+                {"s": "FOREXCOM:SPXUSD", "d": "S&P 500"},
+                {"s": "FOREXCOM:DJI", "d": "Dow Jones"},
+                {"s": "FOREXCOM:NSXUSD", "d": "Nasdaq 100"},
+                {"s": "AMEX:IWM", "d": "Russell 2000"}
+              ]
+            },
+            {
+              "title": "UK & Europe",
+              "symbols": [
+                {"s": "FTSE:UKX", "d": "FTSE 100"},
+                {"s": "XETR:DAX", "d": "DAX"},
+                {"s": "EURONEXT:PX1", "d": "CAC 40"},
+                {"s": "FX:GBPUSD", "d": "GBP/USD"}
+              ]
+            },
+            {
+              "title": "Commodities & Crypto",
+              "symbols": [
+                {"s": "OANDA:XAUUSD", "d": "Gold"},
+                {"s": "TVC:USOIL", "d": "WTI Crude"},
+                {"s": "OANDA:XAGUSD", "d": "Silver"},
+                {"s": "BITSTAMP:BTCUSD", "d": "Bitcoin"},
+                {"s": "BITSTAMP:ETHUSD", "d": "Ethereum"}
+              ]
+            }
+          ]
+        }
+        </script>
+      </div>
+      <div class="section-head" style="margin-top:44px;">
+        <div>
+          <h2 style="font-size:22px;">News that moves these markets</h2>
+        </div>
+      </div>
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+        {
+          "feedMode": "all_symbols",
+          "isTransparent": false,
+          "displayMode": "regular",
+          "width": "100%",
+          "height": "460",
+          "colorTheme": "light",
+          "locale": "en"
+        }
+        </script>
+      </div>
+      <p class="disclaimer">This section is now powered by TradingView's free live market-overview widget — it will show real, moving prices once the page is hosted on a real domain (GitHub Pages counts). It may not render inside Claude's in-chat preview, since preview pages only allow scripts from a short safe list and TradingView isn't on it — but it will work correctly once you upload this file to GitHub.</p>
+    </div>
+  </section>
+
+  <section id="courses">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Free courses</h2>
+          <p>Self-paced tracks. No signup, no upsell to unlock lesson two.</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="course-card">
+          <div class="course-head">
+            <div class="level">BEGINNER</div>
+            <h3>Markets 101</h3>
+            <p>What a stock, bond and index actually are.</p>
+          </div>
+          <div class="course-body">
+            <ol>
+              <li>How stock markets work</li>
+              <li>Stocks vs. bonds vs. funds</li>
+              <li>Reading a price chart</li>
+              <li>What moves prices (earnings, rates, news)</li>
+              <li>Opening your first brokerage account</li>
+            </ol>
+          </div>
+        </div>
+        <div class="course-card">
+          <div class="course-head">
+            <div class="level">INTERMEDIATE</div>
+            <h3>Risk &amp; Strategy</h3>
+            <p>The part that separates hobbyists from survivors.</p>
+          </div>
+          <div class="course-body">
+            <ol>
+              <li>Position sizing and stop-losses</li>
+              <li>Technical analysis basics: support, resistance, trend</li>
+              <li>Fundamental analysis: reading a balance sheet</li>
+              <li>Building a watchlist</li>
+              <li>Journaling and reviewing your trades</li>
+            </ol>
+          </div>
+        </div>
+        <div class="course-card">
+          <div class="course-head">
+            <div class="level">FOCUS TRACK</div>
+            <h3>Forex &amp; Commodities</h3>
+            <p>Currency pairs, gold, oil — how they differ from stocks.</p>
+          </div>
+          <div class="course-body">
+            <ol>
+              <li>How currency pairs are quoted</li>
+              <li>Pips, lots and leverage explained</li>
+              <li>Why gold and oil move on different news</li>
+              <li>Spot vs. futures vs. CFDs</li>
+              <li>Session timing: London, New York, Tokyo</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="platforms">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Where people actually invest</h2>
+          <p>A plain comparison of platform types — not a ranking of which pays the best commission.</p>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Platform type</th><th>Best for</th><th>Typical minimum</th><th>Watch out for</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Regulated stock brokers</strong><br><span class="tag">e.g. long-term investing</span></td>
+              <td>Buying real shares, ETFs, index funds</td>
+              <td>Often $0–$100</td>
+              <td>Currency conversion fees on foreign stocks</td>
+            </tr>
+            <tr>
+              <td><strong>Forex/CFD brokers</strong><br><span class="tag">leverage available</span></td>
+              <td>Currency pairs, short-term trading</td>
+              <td>$50–$250</td>
+              <td>Leverage magnifies losses as fast as gains</td>
+            </tr>
+            <tr>
+              <td><strong>Commodity &amp; futures brokers</strong></td>
+              <td>Gold, oil, agricultural contracts</td>
+              <td>Varies widely, often higher</td>
+              <td>Contract expiry dates, margin calls</td>
+            </tr>
+            <tr>
+              <td><strong>Robo-advisors</strong></td>
+              <td>Hands-off, automated portfolios</td>
+              <td>Often $0–$500</td>
+              <td>Less control over individual holdings</td>
+            </tr>
+            <tr>
+              <td><strong>Crypto exchanges</strong></td>
+              <td>Digital assets</td>
+              <td>Often no minimum</td>
+              <td>Regulation varies hugely by country</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="disclaimer">Placeholder rows — this is where your specific, regulated broker partners go once you've picked your affiliate program (e.g. a licensed forex broker, a stock broker with an affiliate scheme). Always confirm a broker is regulated in the visitor's country before recommending it.</p>
+    </div>
+  </section>
+
+  <section id="commodities">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Commodities &amp; forex, briefly</h2>
+          <p>Two asset classes that move on different logic than stocks.</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Gold &amp; precious metals</h3>
+          <p>Tends to rise when investors are nervous — inflation fears, currency weakness, geopolitical tension. Traded as spot, futures, ETFs or physical bullion.</p>
+        </div>
+        <div class="card">
+          <h3>Oil &amp; energy</h3>
+          <p>Driven by supply decisions (OPEC+), geopolitical conflict near production regions, and global demand — especially from the US and China.</p>
+        </div>
+        <div class="card">
+          <h3>Forex (currency pairs)</h3>
+          <p>Moves on interest rate decisions, inflation data and central bank tone. The most liquid market in the world, open nearly 24 hours across global sessions.</p>
+        </div>
+        <div class="card">
+          <h3>Agricultural commodities</h3>
+          <p>Wheat, coffee, soybeans — sensitive to weather, harvest reports and export restrictions rather than corporate earnings.</p>
+        </div>
+        <div class="card">
+          <h3>Leverage, explained simply</h3>
+          <p>Borrowed exposure that multiplies both gains and losses. 10x leverage means a 5% adverse move can wipe out half your position.</p>
+        </div>
+        <div class="card">
+          <h3>Correlation across assets</h3>
+          <p>A weaker US dollar often lifts gold and commodities priced in dollars — one reason to watch currency markets even if you only trade stocks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>How to actually buy and sell</h2>
+          <p>The mechanical process, the same shape across stocks, forex and commodities.</p>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div><h3>Choose a regulated platform</h3><p>Confirm it's licensed by a real regulator (SEC/FINRA in the US, FCA in the UK, ASIC in Australia, etc.) before depositing anything.</p></div>
+        </div>
+        <div class="step">
+          <div><h3>Fund the account</h3><p>Start with an amount you're fully prepared to lose. Most regulated brokers support bank transfer, card, or e-wallet funding.</p></div>
+        </div>
+        <div class="step">
+          <div><h3>Research before you click buy</h3><p>Check the asset's recent price action, upcoming news or earnings, and how it fits your existing portfolio and risk tolerance.</p></div>
+        </div>
+        <div class="step">
+          <div><h3>Set your order type</h3><p>A market order fills instantly at current price. A limit order only fills at your chosen price or better — useful for controlling entry.</p></div>
+        </div>
+        <div class="step">
+          <div><h3>Set a stop-loss before you enter</h3><p>Decide the price at which you'll exit if the trade goes wrong — and set it at the same time you open the position, not after.</p></div>
+        </div>
+        <div class="step">
+          <div><h3>Exit on plan, not on emotion</h3><p>Sell (or close) at your target profit or your stop-loss level — the level you decided before the trade started moving your feelings around.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="callout">
+        <div>
+          <h3>Get the weekly market brief</h3>
+          <p>One short email — no signals, no "guaranteed" anything, just the week's key US, UK and commodity moves explained plainly.</p>
+        </div>
+        <a href="#" class="btn btn-primary">Join free</a>
+      </div>
+      <p class="disclaimer"><strong>Not financial advice.</strong> Everything on this site is for educational purposes only. Trading and investing carry risk of loss, including loss of your entire deposit, and leveraged products can lose more than your initial deposit. Past performance does not predict future results. Always do your own research and consider speaking with a licensed financial advisor before investing.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Ledger &amp; Line — trading and investing, explained plainly.</div>
+    <div><a href="#guides">Guidelines</a> &nbsp;·&nbsp; <a href="#courses">Courses</a> &nbsp;·&nbsp; <a href="#platforms">Platforms</a> &nbsp;·&nbsp; <a href="#process">How-to</a></div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('navToggle').addEventListener('click', function() {
+    document.getElementById('navlinks').classList.toggle('open');
+  });
+</script>
+
+<!-- ============================================================
+     FIREBASE CONFIG — sign-in, live visitor counter, member counter
+     ============================================================
+     This is what powers "Sign in with Google", email sign-in, and
+     the two live numbers in the bar above ("visitors" / "traders joined").
+     It needs a free Firebase project (5–10 min setup, no cost at
+     this site's scale). Steps:
+
+     1. Go to https://console.firebase.google.com → "Add project" →
+        name it anything (e.g. "ledger-and-line") → finish setup.
+     2. In the project, click the </> (web) icon to register a web app.
+        Firebase shows you a firebaseConfig object — copy it and paste
+        it below, replacing the placeholder object.
+     3. Left sidebar → Build → Authentication → "Get started".
+        Under "Sign-in method", enable "Google" and "Email/Password".
+        For Google, add your site as an authorized domain (it will
+        prompt you) — e.g. aghasaeed-design.github.io.
+     4. Left sidebar → Build → Firestore Database → "Create database"
+        → start in "test mode" (fine for now; tighten rules later).
+     5. Save this file and re-upload to GitHub. Sign-in and the two
+        counters will then work for real, for every visitor.
+
+     Until you do this, the buttons above will show a friendly notice
+     instead of failing silently.
+  ============================================================ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import {
+    getAuth, GoogleAuthProvider, signInWithPopup,
+    createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    onAuthStateChanged, signOut
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+  import {
+    getFirestore, doc, getDoc, setDoc, increment, onSnapshot
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+  // ↓↓↓ REPLACE with the config object Firebase gives you (step 2 above) ↓↓↓
+  const firebaseConfig = {
+    apiKey: "AIzaSyDZ7vtKmmtoVR46YZNokX_M8QD4-U5kjqQ",
+    authDomain: "smart-trade-7dbb1.firebaseapp.com",
+    projectId: "smart-trade-7dbb1",
+    storageBucket: "smart-trade-7dbb1.firebasestorage.app",
+    messagingSenderId: "660111777529",
+    appId: "1:660111777529:web:c849e97718d450153bcc28"
+  };
+  const isConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY";
+
+  const authModal = document.getElementById('authModal');
+  const modalError = document.getElementById('modalError');
+  const setupNote = document.getElementById('setupNote');
+  const signInNavBtn = document.getElementById('signInNavBtn');
+  const userChip = document.getElementById('userChip');
+
+  function openModal() { authModal.classList.add('open'); }
+  function closeModal() { authModal.classList.remove('open'); modalError.style.display = 'none'; }
+  signInNavBtn.addEventListener('click', openModal);
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  authModal.addEventListener('click', (e) => { if (e.target === authModal) closeModal(); });
+
+  if (!isConfigured) {
+    setupNote.style.display = 'block';
+  } else {
+    setupNote.style.display = 'none';
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+    const statsRef = doc(db, "stats", "counters");
+
+    // ---- Live counters (visible to every visitor, no login needed) ----
+    onSnapshot(statsRef, (snap) => {
+      const data = snap.data() || { visitors: 0, members: 0 };
+      document.getElementById('visitorCount').textContent = (data.visitors || 0).toLocaleString();
+      document.getElementById('memberCount').textContent = (data.members || 0).toLocaleString();
+    });
+
+    // Count this visit once per browser session
+    if (!sessionStorage.getItem('counted_visit')) {
+      setDoc(statsRef, { visitors: increment(1) }, { merge: true }).catch(() => {});
+      sessionStorage.setItem('counted_visit', '1');
+    }
+
+    // ---- Auth state ----
+    let isNewSignup = false;
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        signInNavBtn.style.display = 'none';
+        userChip.style.display = 'flex';
+        document.getElementById('userChipName').textContent = user.displayName || user.email;
+        document.getElementById('userChipAvatar').src = user.photoURL || 'icon.svg';
+        closeModal();
+        if (isNewSignup) {
+          setDoc(statsRef, { members: increment(1) }, { merge: true }).catch(() => {});
+          isNewSignup = false;
+        }
+      } else {
+        signInNavBtn.style.display = 'inline-block';
+        userChip.style.display = 'none';
+      }
+    });
+
+    document.getElementById('signOutBtn').addEventListener('click', () => signOut(auth));
+
+    // ---- Google sign-in ----
+    const googleBtn = document.createElement('button');
+    googleBtn.className = 'btn btn-ghost';
+    googleBtn.style.width = '100%';
+    googleBtn.textContent = 'Continue with Google';
+    googleBtn.addEventListener('click', async () => {
+      try {
+        const result = await signInWithPopup(auth, provider);
+        if (result._tokenResponse && result._tokenResponse.isNewUser) isNewSignup = true;
+      } catch (err) {
+        modalError.textContent = err.message;
+        modalError.style.display = 'block';
+      }
+    });
+    document.getElementById('googleSignInBtn').appendChild(googleBtn);
+
+    // ---- Email sign-in / sign-up ----
+    let mode = 'signin';
+    const toggleLink = document.getElementById('modalToggleLink');
+    const submitBtn = document.getElementById('emailSubmitBtn');
+    toggleLink.addEventListener('click', () => {
+      mode = mode === 'signin' ? 'signup' : 'signin';
+      submitBtn.textContent = mode === 'signin' ? 'Sign in' : 'Create account';
+      toggleLink.textContent = mode === 'signin' ? 'Create one' : 'Sign in instead';
+      document.querySelector('.modal-toggle').firstChild.textContent = mode === 'signin' ? 'No account? ' : 'Already have one? ';
+    });
+    submitBtn.addEventListener('click', async () => {
+      const email = document.getElementById('emailInput').value.trim();
+      const pass = document.getElementById('passwordInput').value;
+      modalError.style.display = 'none';
+      if (!email || !pass) { modalError.textContent = 'Enter an email and password.'; modalError.style.display = 'block'; return; }
+      try {
+        if (mode === 'signup') {
+          isNewSignup = true;
+          await createUserWithEmailAndPassword(auth, email, pass);
+        } else {
+          await signInWithEmailAndPassword(auth, email, pass);
+        }
+      } catch (err) {
+        modalError.textContent = err.message;
+        modalError.style.display = 'block';
+      }
+    });
+  }
+</script>
+
+<!-- ============================================================
+     PWA install prompt — lets visitors "download" this as an app
+     ============================================================ -->
+<script>
+  let deferredInstallPrompt = null;
+  const installBtn = document.getElementById('installBtn');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    installBtn.classList.add('show');
+  });
+
+  installBtn.addEventListener('click', async () => {
+    if (!deferredInstallPrompt) {
+      alert('On iPhone/iPad: tap the Share icon in Safari, then "Add to Home Screen".\nOn desktop Chrome: use the install icon (⊕) in the address bar.');
+      return;
+    }
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    installBtn.classList.remove('show');
+  });
+
+  window.addEventListener('appinstalled', () => {
+    installBtn.classList.remove('show');
+  });
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
+</script>
+</body>
+</html>
