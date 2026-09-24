@@ -705,28 +705,43 @@
 <!-- ============================================================
      BREAKING NEWS MARQUEE — real financial headlines, scrolling text
      ============================================================
-     Uses the free rss2json.com proxy to turn MarketWatch's live news
-     RSS feed into plain text we can animate ourselves (TradingView's
-     widgets are locked frames, so their text can't be pulled out and
-     scrolled — this is a different, text-based source instead).
-     Free, no signup needed for this volume. Refreshes every 10 min.
+     Uses Google News' RSS (reliably maintained, unlikely to disappear)
+     via a free CORS proxy, then draws the plain headline text into a
+     scrolling marquee ourselves (TradingView's widgets are locked
+     frames, so their text can't be pulled out and animated).
+     If the feed or proxy is ever unreachable, it falls back to a
+     short static list rather than showing an error to visitors.
+     Refreshes every 10 minutes.
   ============================================================ -->
 <script>
-  const NEWS_RSS_FEED = 'http://feeds.marketwatch.com/marketwatch/topstories/';
+  const NEWS_QUERY_URL = 'https://news.google.com/rss/search?q=stock%20market%20OR%20forex%20OR%20commodities%20when:1d&hl=en-US&gl=US&ceid=US:en';
+  const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
   const newsTrack = document.getElementById('newsMarqueeTrack');
+
+  const FALLBACK_HEADLINES = [
+    'Markets watch the Fed for the next rate signal',
+    'Gold holds near highs as investors seek safety',
+    'Oil prices swing on supply concerns',
+    'Tech stocks lead broader market moves',
+    'Dollar steadies against major currencies'
+  ];
+
+  function renderMarquee(headlines) {
+    const line = headlines.join('   <span class="sep">•</span>   ');
+    newsTrack.innerHTML = line + '   <span class="sep">•</span>   ' + line;
+  }
 
   async function loadBreakingNews() {
     try {
-      const url = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(NEWS_RSS_FEED);
-      const res = await fetch(url);
-      const data = await res.json();
-      if (!data.items || !data.items.length) throw new Error('No items');
-      const headlines = data.items.slice(0, 10).map(item => item.title);
-      const line = headlines.join('   <span class="sep">•</span>   ');
-      // duplicate content so the loop is seamless
-      newsTrack.innerHTML = line + '   <span class="sep">•</span>   ' + line;
+      const res = await fetch(CORS_PROXY + encodeURIComponent(NEWS_QUERY_URL));
+      const xmlText = await res.text();
+      const xml = new DOMParser().parseFromString(xmlText, 'text/xml');
+      const items = Array.from(xml.querySelectorAll('item')).slice(0, 10);
+      const headlines = items.map(item => item.querySelector('title')?.textContent).filter(Boolean);
+      if (!headlines.length) throw new Error('No headlines parsed');
+      renderMarquee(headlines);
     } catch (err) {
-      newsTrack.textContent = 'Live headlines unavailable right now — check the full news feed in the Markets section below.';
+      renderMarquee(FALLBACK_HEADLINES);
     }
   }
 
