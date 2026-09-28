@@ -33,7 +33,7 @@
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
-  html { scroll-padding-top: 64px; scroll-behavior: smooth; }
+  html { scroll-padding-top: calc(var(--ticker-h, 72px) + var(--header-h, 72px) + 8px); scroll-behavior: smooth; }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) { --paper: #0E1A2B; --paper-dim: #172436; --ink: #F6F3EC; --line-dark: rgba(246,243,236,0.14); }
   }
@@ -98,7 +98,7 @@
     background: var(--paper);
     border-bottom: 1px solid var(--line-dark);
     position: sticky;
-    top: 34px;
+    top: var(--ticker-h, 72px);
     z-index: 49;
   }
   nav.wrap { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; }
@@ -697,8 +697,30 @@
 </footer>
 
 <script>
+  // Keep the nav pinned exactly under the price ticker, whatever height the ticker widget ends up
+  (function() {
+    var root = document.documentElement;
+    var ticker = document.querySelector('.ticker-bar');
+    var header = document.querySelector('header.site');
+    function setHeights() {
+      root.style.setProperty('--ticker-h', ticker.offsetHeight + 'px');
+      root.style.setProperty('--header-h', header.offsetHeight + 'px');
+    }
+    setHeights();
+    window.addEventListener('resize', setHeights);
+    window.addEventListener('load', setHeights);
+    if ('ResizeObserver' in window) {
+      var ro = new ResizeObserver(setHeights);
+      ro.observe(ticker);
+      ro.observe(header);
+    }
+  })();
+
   document.getElementById('navToggle').addEventListener('click', function() {
     document.getElementById('navlinks').classList.toggle('open');
+  });
+  document.querySelectorAll('#navlinks a').forEach(function(a) {
+    a.addEventListener('click', function() { document.getElementById('navlinks').classList.remove('open'); });
   });
 </script>
 
