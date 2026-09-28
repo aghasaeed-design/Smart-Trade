@@ -779,7 +779,7 @@
   import {
     getAuth, GoogleAuthProvider, signInWithPopup,
     createUserWithEmailAndPassword, signInWithEmailAndPassword,
-    onAuthStateChanged, signOut
+    onAuthStateChanged, signOut, getAdditionalUserInfo
   } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
   import {
     getFirestore, doc, getDoc, setDoc, increment, onSnapshot
@@ -832,7 +832,9 @@
     }
 
     // ---- Auth state ----
-    let isNewSignup = false;
+    function countNewMember() {
+      setDoc(statsRef, { members: increment(1) }, { merge: true }).catch(() => {});
+    }
     onAuthStateChanged(auth, (user) => {
       if (user) {
         signInNavBtn.style.display = 'none';
@@ -840,10 +842,6 @@
         document.getElementById('userChipName').textContent = user.displayName || user.email;
         document.getElementById('userChipAvatar').src = user.photoURL || 'icon.svg';
         closeModal();
-        if (isNewSignup) {
-          setDoc(statsRef, { members: increment(1) }, { merge: true }).catch(() => {});
-          isNewSignup = false;
-        }
       } else {
         signInNavBtn.style.display = 'inline-block';
         userChip.style.display = 'none';
@@ -860,7 +858,8 @@
     googleBtn.addEventListener('click', async () => {
       try {
         const result = await signInWithPopup(auth, provider);
-        if (result._tokenResponse && result._tokenResponse.isNewUser) isNewSignup = true;
+        const info = getAdditionalUserInfo(result);
+        if (info && info.isNewUser) countNewMember();
       } catch (err) {
         modalError.textContent = err.message;
         modalError.style.display = 'block';
@@ -885,8 +884,8 @@
       if (!email || !pass) { modalError.textContent = 'Enter an email and password.'; modalError.style.display = 'block'; return; }
       try {
         if (mode === 'signup') {
-          isNewSignup = true;
           await createUserWithEmailAndPassword(auth, email, pass);
+          countNewMember();
         } else {
           await signInWithEmailAndPassword(auth, email, pass);
         }
