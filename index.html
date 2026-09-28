@@ -235,6 +235,21 @@
   .modal-error { color: var(--down); font-size: 12.5px; margin: 0 0 10px; display: none; }
   .setup-note { font-size: 11.5px; color: var(--slate); background: var(--paper-dim); border-radius: 3px; padding: 10px 12px; margin-top: 18px; line-height: 1.5; }
 
+  /* ---- Tools ---- */
+  .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 860px) { .tool-grid { grid-template-columns: 1fr; } }
+  .tool-panel h3, .calc h3 { font-size: 18px; margin: 0 0 12px; }
+  .tool-panel .tradingview-widget-container { border: 1px solid var(--line-dark); border-radius: 4px; overflow: hidden; background: #fff; }
+  .calc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 44px; }
+  @media (max-width: 860px) { .calc-grid { grid-template-columns: 1fr; } }
+  .calc { border: 1px solid var(--line-dark); border-radius: 4px; padding: 24px; }
+  .calc label { display: block; font-size: 12.5px; color: var(--slate); margin: 10px 0 4px; }
+  .calc input, .calc select { width: 100%; padding: 10px 12px; border: 1px solid var(--line-dark); border-radius: 3px; background: var(--paper); color: var(--ink); font: inherit; font-size: 14px; }
+  .calc .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .calc .result { margin-top: 16px; padding: 14px 16px; background: var(--paper-dim); border-left: 3px solid var(--gold); border-radius: 3px; font-size: 14px; }
+  .calc .result b { font-family: 'IBM Plex Mono', monospace; font-size: 17px; }
+  .calc .result .pos { color: var(--up); } .calc .result .neg { color: var(--down); }
+
   footer { padding: 46px 0 60px; }
   footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; font-size: 13px; color: var(--slate); }
   footer a { text-decoration: none; }
@@ -287,6 +302,7 @@
       <li><a href="#guides">Guidelines</a></li>
       <li><a href="#markets">Markets</a></li>
       <li><a href="#courses">Free Courses</a></li>
+      <li><a href="#tools">Tools</a></li>
       <li><a href="#platforms">Platforms</a></li>
       <li><a href="#commodities">Commodities &amp; FX</a></li>
       <li><a href="#process">How to Buy &amp; Sell</a></li>
@@ -491,6 +507,71 @@
         </script>
       </div>
       <p class="disclaimer">This section is now powered by TradingView's free live market-overview widget — it will show real, moving prices once the page is hosted on a real domain (GitHub Pages counts). It may not render inside Claude's in-chat preview, since preview pages only allow scripts from a short safe list and TradingView isn't on it — but it will work correctly once you upload this file to GitHub.</p>
+    </div>
+  </section>
+
+  <section id="tools">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Trader's toolkit</h2>
+          <p>Live exchange rates, the economic calendar and calculators to size a trade before you place it.</p>
+        </div>
+      </div>
+      <div class="tool-grid">
+        <div class="tool-panel">
+          <h3>Exchange rates</h3>
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-forex-cross-rates.js" async>
+            {"width":"100%","height":420,"currencies":["EUR","USD","JPY","GBP","CHF","AUD","CAD","NZD"],"isTransparent":false,"colorTheme":"light","locale":"en"}
+            </script>
+          </div>
+        </div>
+        <div class="tool-panel">
+          <h3>Economic calendar</h3>
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
+            {"width":"100%","height":420,"colorTheme":"light","isTransparent":false,"locale":"en","importanceFilter":"-1,0,1","countryFilter":"us,eu,gb,jp,cn,de,ca,au"}
+            </script>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-grid">
+        <div class="calc" id="calcSize">
+          <h3>Position size</h3>
+          <label for="ps_bal">Account balance</label><input type="number" id="ps_bal" value="1000" step="any" inputmode="decimal">
+          <div class="row2"><div><label for="ps_risk">Risk per trade (%)</label><input type="number" id="ps_risk" value="1" step="any" inputmode="decimal"></div><div></div></div>
+          <div class="row2"><div><label for="ps_entry">Entry price</label><input type="number" id="ps_entry" value="100" step="any" inputmode="decimal"></div><div><label for="ps_stop">Stop-loss price</label><input type="number" id="ps_stop" value="98" step="any" inputmode="decimal"></div></div>
+          <div class="result" id="ps_out"></div>
+        </div>
+        <div class="calc" id="calcRR">
+          <h3>Risk / reward</h3>
+          <div class="row2"><div><label for="rr_entry">Entry price</label><input type="number" id="rr_entry" value="100" step="any" inputmode="decimal"></div><div><label for="rr_stop">Stop-loss price</label><input type="number" id="rr_stop" value="98" step="any" inputmode="decimal"></div></div>
+          <label for="rr_target">Target price</label><input type="number" id="rr_target" value="106" step="any" inputmode="decimal">
+          <div class="result" id="rr_out"></div>
+        </div>
+        <div class="calc" id="calcPip">
+          <h3>Pip value</h3>
+          <label for="pv_lot">Trade size</label>
+          <select id="pv_lot"><option value="100000">Standard lot (100,000)</option><option value="10000">Mini lot (10,000)</option><option value="1000">Micro lot (1,000)</option></select>
+          <label for="pv_size">Pip size</label>
+          <select id="pv_size"><option value="0.0001">0.0001 (most pairs, e.g. EUR/USD)</option><option value="0.01">0.01 (JPY pairs)</option></select>
+          <label for="pv_n">Number of lots</label><input type="number" id="pv_n" value="1" step="any" inputmode="decimal">
+          <div class="result" id="pv_out"></div>
+        </div>
+        <div class="calc" id="calcPL">
+          <h3>Profit / loss</h3>
+          <label for="pl_dir">Direction</label>
+          <select id="pl_dir"><option value="1">Buy (long)</option><option value="-1">Sell (short)</option></select>
+          <div class="row2"><div><label for="pl_entry">Entry price</label><input type="number" id="pl_entry" value="100" step="any" inputmode="decimal"></div><div><label for="pl_exit">Exit price</label><input type="number" id="pl_exit" value="104" step="any" inputmode="decimal"></div></div>
+          <div class="row2"><div><label for="pl_units">Units / shares</label><input type="number" id="pl_units" value="50" step="any" inputmode="decimal"></div><div><label for="pl_fee">Total fees</label><input type="number" id="pl_fee" value="2" step="any" inputmode="decimal"></div></div>
+          <div class="result" id="pl_out"></div>
+        </div>
+      </div>
+      <p class="disclaimer">Calculators give estimates for education only. Pip value is shown in the pair's quote currency, and real results depend on spreads, fees, slippage and leverage. Check figures with your broker before trading.</p>
     </div>
   </section>
 
@@ -722,6 +803,46 @@
   document.querySelectorAll('#navlinks a').forEach(function(a) {
     a.addEventListener('click', function() { document.getElementById('navlinks').classList.remove('open'); });
   });
+</script>
+
+<script>
+  (function() {
+    var $ = function(id) { return document.getElementById(id); };
+    var num = function(id) { return parseFloat($(id).value); };
+    var f = function(n, d) { return isFinite(n) ? n.toLocaleString('en-US', {maximumFractionDigits: d === undefined ? 2 : d}) : '—'; };
+    var msg = 'Enter valid numbers above.';
+    function size() {
+      var bal = num('ps_bal'), r = num('ps_risk'), e = num('ps_entry'), sl = num('ps_stop');
+      var dist = Math.abs(e - sl), risk = bal * r / 100, units = risk / dist;
+      $('ps_out').innerHTML = (dist > 0 && risk > 0)
+        ? 'Amount at risk: <b>' + f(risk) + '</b><br>Position size: <b>' + f(units, 4) + '</b> units<br>Position value: <b>' + f(units * e) + '</b>'
+        : msg;
+    }
+    function rr() {
+      var e = num('rr_entry'), sl = num('rr_stop'), t = num('rr_target');
+      var risk = Math.abs(e - sl), reward = Math.abs(t - e), ratio = reward / risk;
+      $('rr_out').innerHTML = (risk > 0 && reward > 0)
+        ? 'Risk: <b>' + f(risk, 4) + '</b> · Reward: <b>' + f(reward, 4) + '</b><br>Ratio: <b>1 : ' + f(ratio) + '</b><br>You only need to win about <b>' + f(100 / (1 + ratio), 1) + '%</b> of trades to break even'
+        : msg;
+    }
+    function pip() {
+      var v = num('pv_lot') * num('pv_size') * num('pv_n');
+      $('pv_out').innerHTML = isFinite(v) && v > 0 ? 'One pip is worth <b>' + f(v) + '</b> in the quote currency' : msg;
+    }
+    function pl() {
+      var d = parseFloat($('pl_dir').value), e = num('pl_entry'), x = num('pl_exit'), u = num('pl_units'), fee = num('pl_fee') || 0;
+      var gross = d * (x - e) * u, net = gross - fee, cls = net >= 0 ? 'pos' : 'neg';
+      $('pl_out').innerHTML = isFinite(net)
+        ? 'Gross: <b>' + f(gross) + '</b><br>Net after fees: <b class="' + cls + '">' + f(net) + '</b>'
+        : msg;
+    }
+    [['calcSize', size], ['calcRR', rr], ['calcPip', pip], ['calcPL', pl]].forEach(function(c) {
+      var box = $(c[0]);
+      box.addEventListener('input', c[1]);
+      box.addEventListener('change', c[1]);
+      c[1]();
+    });
+  })();
 </script>
 
 <!-- ============================================================
