@@ -250,6 +250,11 @@
   .calc .result b { font-family: 'IBM Plex Mono', monospace; font-size: 17px; }
   .calc .result .pos { color: var(--up); } .calc .result .neg { color: var(--down); }
 
+  /* ---- Back to top ---- */
+  .to-top { position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--gold); background: #0E1A2B; color: var(--gold-bright); font-size: 22px; line-height: 1; cursor: pointer; z-index: 60; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity .25s, transform .25s, visibility .25s; box-shadow: 0 4px 14px rgba(0,0,0,.35); }
+  .to-top.show { opacity: 1; visibility: visible; transform: none; }
+  .to-top:hover { background: var(--gold); color: #0E1A2B; }
+
   footer { padding: 46px 0 60px; }
   footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; font-size: 13px; color: var(--slate); }
   footer a { text-decoration: none; }
@@ -777,6 +782,8 @@
   </div>
 </footer>
 
+<button class="to-top" id="toTop" aria-label="Back to top" title="Back to top">&#8593;</button>
+
 <script>
   // Keep the nav pinned exactly under the price ticker, whatever height the ticker widget ends up
   (function() {
@@ -796,6 +803,14 @@
       ro.observe(header);
     }
   })();
+
+  var toTop = document.getElementById('toTop');
+  window.addEventListener('scroll', function() {
+    toTop.classList.toggle('show', window.scrollY > 500);
+  }, { passive: true });
+  toTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 
   document.getElementById('navToggle').addEventListener('click', function() {
     document.getElementById('navlinks').classList.toggle('open');
