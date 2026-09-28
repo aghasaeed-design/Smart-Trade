@@ -201,14 +201,14 @@
   .disclaimer { font-size: 12.5px; color: var(--slate); background: var(--paper-dim); border: 1px solid var(--line-dark); border-radius: 4px; padding: 16px 18px; margin-top: 40px; }
 
   /* ---- Stats bar ---- */
-  .stats-bar { background: var(--ink); color: var(--paper); border-bottom: 1px solid var(--gold); }
+  .stats-bar { background: #0E1A2B; color: #F0F2F5; border-bottom: 1px solid var(--gold); }
   @media (prefers-color-scheme: dark) { .stats-bar { background: #070D16; } }
   :root[data-theme="dark"] .stats-bar { background: #070D16; }
-  .stats-bar .wrap { display: flex; gap: 28px; padding: 9px 24px; font-size: 13px; align-items: center; flex-wrap: wrap; }
-  .stats-bar .stat { display: flex; gap: 6px; align-items: center; opacity: 0.92; }
-  .stats-bar .stat b { font-family: 'IBM Plex Mono', monospace; color: var(--gold-bright); }
+  .stats-bar .wrap { display: flex; gap: 32px; padding: 12px 24px; font-size: 16px; align-items: center; flex-wrap: wrap; }
+  .stats-bar .stat { display: flex; gap: 8px; align-items: center; opacity: 1; font-weight: 500; }
+  .stats-bar .stat b { font-family: 'IBM Plex Mono', monospace; color: var(--gold-bright); font-size: 20px; }
   .stats-bar .spacer { flex: 1; }
-  .stats-bar .install-btn { background: var(--gold); color: var(--ink); border: none; padding: 6px 14px; border-radius: 3px; font-weight: 600; font-size: 12.5px; cursor: pointer; display: none; }
+  .stats-bar .install-btn { background: var(--gold); color: #0E1A2B; border: none; padding: 6px 14px; border-radius: 3px; font-weight: 600; font-size: 14px; cursor: pointer; display: none; }
   .stats-bar .install-btn.show { display: inline-block; }
 
   /* ---- Auth ---- */
