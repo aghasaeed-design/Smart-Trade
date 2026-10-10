@@ -333,6 +333,7 @@
       <li><a href="#markets">Markets</a></li>
       <li><a href="#courses">Free Courses</a></li>
       <li><a href="#tools">Tools</a></li>
+      <li><a href="#realestate">UAE Real Estate</a></li>
       <li><a href="#platforms">Platforms</a></li>
       <li><a href="#commodities">Commodities &amp; FX</a></li>
       <li><a href="#process">How to Buy &amp; Sell</a></li>
@@ -754,6 +755,88 @@
     </div>
   </section>
 
+  <section id="realestate">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>UAE real estate as an investment</h2>
+          <p>Property is a different asset class from trading, but the same question applies: what controls the market, and how do you work out if a return is actually good.</p>
+        </div>
+      </div>
+
+      <div class="guide-item">
+        <div class="guide-num">01</div>
+        <div><h3>Who controls the market</h3><p>In Dubai, RERA (the Real Estate Regulatory Agency, part of the Dubai Land Department) is the equivalent of a financial regulator for property. It licenses developers and brokers, enforces escrow accounts so buyer payments on off-plan projects go into a protected account rather than straight to the developer, runs the official title deed and Oqood (pre-registration) system, and publishes an annual Rental Index used to cap how much landlords can raise rent on existing tenants. Other emirates have their own regulators (Ajman, Sharjah and so on each run their own), so the rules aren't identical UAE-wide.</p></div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">02</div>
+        <div><h3>How a return is actually evaluated</h3><p>Two numbers matter most: rental yield (the income a property produces each year as a percentage of its price) and capital appreciation (how much the price itself grows over time). A property can have a high yield and flat appreciation, or the reverse — judging only the purchase price without checking achievable rent is how people overpay.</p></div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">03</div>
+        <div><h3>What moves prices up or down</h3><p>Supply of new handovers, interest rates (higher rates make mortgages costlier and cool demand), population and visa policy (the Golden Visa and remote-work visas pulled in buyers), oil-linked economic cycles, and very local factors like a building's service charges, developer track record and distance to transport or schools. Off-plan prices also move differently from ready/secondary market prices, since off-plan carries construction risk the ready market doesn't.</p></div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">04</div>
+        <div><h3>Off-plan vs ready property</h3><p>Off-plan (buying before or during construction) is usually cheaper per square foot and paid in installments, but carries delay and developer risk — RERA's escrow law exists specifically to reduce that risk. Ready property costs more upfront but you can see exactly what you're buying and start earning rent immediately.</p></div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">05</div>
+        <div><h3>Costs beyond the purchase price</h3><p>DLD transfer fee (typically 4% of the price), agency commission (commonly 2%), service charges billed per square foot every year, and mortgage registration fees if financed. These come straight out of your real yield, which is why the calculator below separates gross from net.</p></div>
+      </div>
+
+      <div class="calc-grid" style="margin-top:36px;">
+        <div class="calc" id="calcRE" style="grid-column: 1 / -1;">
+          <h3>Dubai property ROI &amp; rental yield calculator</h3>
+          <div class="row2">
+            <div><label for="re_price">Property price (AED)</label><input type="number" id="re_price" value="1200000" step="any" inputmode="decimal"></div>
+            <div><label for="re_rent">Annual rent (AED)</label><input type="number" id="re_rent" value="84000" step="any" inputmode="decimal"></div>
+          </div>
+          <div class="row2">
+            <div><label for="re_service">Annual service charges (AED)</label><input type="number" id="re_service" value="12000" step="any" inputmode="decimal"></div>
+            <div><label for="re_down">Down payment (%)</label><input type="number" id="re_down" value="20" step="any" inputmode="decimal"></div>
+          </div>
+          <div class="row2">
+            <div><label for="re_rate">Mortgage interest rate (%/yr)</label><input type="number" id="re_rate" value="4.5" step="any" inputmode="decimal"></div>
+            <div><label for="re_term">Loan term (years)</label><input type="number" id="re_term" value="20" step="any" inputmode="decimal"></div>
+          </div>
+          <div class="result" id="re_out"></div>
+        </div>
+      </div>
+      <p class="disclaimer">This calculator gives estimates for education only — it excludes one-off costs like the DLD transfer fee and agency commission, and real mortgage terms vary by bank. Figures are illustrative, not a quote; confirm real numbers with a RERA-licensed broker or your bank before investing.</p>
+
+      <div class="section-head" style="margin-top:44px;">
+        <div>
+          <h2 style="font-size:22px;">Area price tracker</h2>
+          <p>Logged by hand from real listings and reports — not an automated feed — so each figure has a date you can trust.</p>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="compare" id="reMarketTable">
+          <thead>
+            <tr><th>Area</th><th>Latest price/sqft (AED)</th><th>As of</th><th>Previous</th><th>Change</th></tr>
+          </thead>
+          <tbody id="reMarketBody">
+            <tr><td colspan="5" style="color:var(--slate);">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card" id="reAdminForm" style="display:none; margin-top:24px;">
+        <h3>Add a price update</h3>
+        <p style="margin-bottom:14px;">Only visible to you, signed in as the site owner.</p>
+        <div class="row2">
+          <div><label for="re_area">Area name</label><input type="text" id="re_area" placeholder="e.g. Downtown Dubai"></div>
+          <div><label for="re_psf">Price per sqft (AED)</label><input type="number" id="re_psf" step="any"></div>
+        </div>
+        <label for="re_date">As of date</label>
+        <input type="date" id="re_date">
+        <button class="btn btn-primary" id="re_submit" style="width:100%; margin-top:14px; border:none; cursor:pointer;">Save update</button>
+        <p class="modal-error" id="re_admin_error"></p>
+      </div>
+    </div>
+  </section>
+
   <section id="process">
     <div class="wrap">
       <div class="section-head">
@@ -876,7 +959,41 @@
         ? 'Gross: <b>' + f(gross) + '</b><br>Net after fees: <b class="' + cls + '">' + f(net) + '</b>'
         : msg;
     }
-    [['calcSize', size], ['calcRR', rr], ['calcPip', pip], ['calcPL', pl]].forEach(function(c) {
+    function re() {
+      var price = num('re_price'), rent = num('re_rent'), service = num('re_service') || 0;
+      var downPct = num('re_down'), rate = num('re_rate'), years = num('re_term');
+      if (!(price > 0 && rent >= 0 && downPct >= 0 && downPct <= 100)) { $('re_out').innerHTML = msg; return; }
+
+      var grossYield = (rent / price) * 100;
+      var netYieldNoMortgage = ((rent - service) / price) * 100;
+
+      var down = price * downPct / 100;
+      var loan = price - down;
+      var monthlyRate = (rate / 100) / 12;
+      var n = years * 12;
+      var monthlyPayment = 0;
+      if (loan > 0 && n > 0) {
+        monthlyPayment = monthlyRate > 0
+          ? loan * (monthlyRate * Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1)
+          : loan / n;
+      }
+      var annualMortgage = monthlyPayment * 12;
+      var annualCashFlow = rent - service - annualMortgage;
+      var cashOnCash = down > 0 ? (annualCashFlow / down) * 100 : null;
+
+      var html = 'Gross rental yield: <b>' + f(grossYield) + '%</b><br>';
+      html += 'Net yield (after service charges, before mortgage): <b>' + f(netYieldNoMortgage) + '%</b><br>';
+      if (loan > 0) {
+        html += 'Estimated monthly mortgage payment: <b>AED ' + f(monthlyPayment) + '</b><br>';
+        var cls = annualCashFlow >= 0 ? 'pos' : 'neg';
+        html += 'Annual cash flow after mortgage: <b class="' + cls + '">AED ' + f(annualCashFlow) + '</b><br>';
+        if (cashOnCash !== null) html += 'Cash-on-cash return (on your down payment): <b class="' + (cashOnCash >= 0 ? 'pos' : 'neg') + '">' + f(cashOnCash) + '%</b>';
+      } else {
+        html += 'Paying in cash — no mortgage payment to subtract.';
+      }
+      $('re_out').innerHTML = html;
+    }
+    [['calcSize', size], ['calcRR', rr], ['calcPip', pip], ['calcPL', pl], ['calcRE', re]].forEach(function(c) {
       var box = $(c[0]);
       box.addEventListener('input', c[1]);
       box.addEventListener('change', c[1]);
@@ -965,7 +1082,8 @@
     onAuthStateChanged, signOut, getAdditionalUserInfo
   } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
   import {
-    getFirestore, doc, getDoc, setDoc, increment, onSnapshot
+    getFirestore, doc, getDoc, setDoc, increment, onSnapshot,
+    collection, addDoc, query, orderBy, onSnapshot as onCollectionSnapshot
   } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
   // ↓↓↓ REPLACE with the config object Firebase gives you (step 2 above) ↓↓↓
@@ -978,6 +1096,11 @@
     appId: "1:660111777529:web:c849e97718d450153bcc28"
   };
   const isConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY";
+
+  // Only this Firebase user can see and use the "Add a price update" form.
+  // Find your UID in Firebase: Authentication → Users tab → copy the value
+  // in the "User UID" column for your own account, then paste it below.
+  const ADMIN_UID = "7HzUNFOLDqYWKmeHVKzBKnBff122";
 
   const authModal = document.getElementById('authModal');
   const modalError = document.getElementById('modalError');
@@ -1025,9 +1148,11 @@
         document.getElementById('userChipName').textContent = user.displayName || user.email;
         document.getElementById('userChipAvatar').src = user.photoURL || 'icon.svg';
         closeModal();
+        document.getElementById('reAdminForm').style.display = (user.uid === ADMIN_UID) ? 'block' : 'none';
       } else {
         signInNavBtn.style.display = 'inline-block';
         userChip.style.display = 'none';
+        document.getElementById('reAdminForm').style.display = 'none';
       }
     });
 
@@ -1077,6 +1202,66 @@
         modalError.style.display = 'block';
       }
     });
+
+    // ---- UAE real estate area price tracker ----
+    // Public: everyone reads the table. Only ADMIN_UID can submit new entries.
+    const reBody = document.getElementById('reMarketBody');
+    const reQuery = query(collection(db, 're_market'), orderBy('area'), orderBy('date'));
+    onCollectionSnapshot(reQuery, (snap) => {
+      const byArea = {};
+      snap.forEach((docSnap) => {
+        const d = docSnap.data();
+        if (!d.area || !d.date || typeof d.pricePerSqft !== 'number') return;
+        (byArea[d.area] = byArea[d.area] || []).push(d);
+      });
+      const areas = Object.keys(byArea).sort();
+      if (!areas.length) {
+        reBody.innerHTML = '<tr><td colspan="5" style="color:var(--slate);">No price data logged yet.</td></tr>';
+        return;
+      }
+      reBody.innerHTML = areas.map((area) => {
+        const entries = byArea[area]; // already sorted by date ascending
+        const latest = entries[entries.length - 1];
+        const prev = entries.length > 1 ? entries[entries.length - 2] : null;
+        let changeHtml = '<span style="color:var(--slate);">—</span>';
+        let prevHtml = '<span style="color:var(--slate);">—</span>';
+        if (prev) {
+          const pct = ((latest.pricePerSqft - prev.pricePerSqft) / prev.pricePerSqft) * 100;
+          const cls = pct >= 0 ? 'up' : 'down';
+          const sign = pct >= 0 ? '+' : '';
+          changeHtml = '<span class="' + cls + '">' + sign + pct.toFixed(1) + '%</span>';
+          prevHtml = Number(prev.pricePerSqft).toLocaleString() + ' (' + prev.date + ')';
+        }
+        return '<tr><td>' + area + '</td><td>' + Number(latest.pricePerSqft).toLocaleString() + '</td><td>' + latest.date + '</td><td>' + prevHtml + '</td><td>' + changeHtml + '</td></tr>';
+      }).join('');
+    }, () => {
+      reBody.innerHTML = '<tr><td colspan="5" style="color:var(--slate);">Price data unavailable right now.</td></tr>';
+    });
+
+    const reSubmitBtn = document.getElementById('re_submit');
+    const reError = document.getElementById('re_admin_error');
+    if (reSubmitBtn) {
+      reSubmitBtn.addEventListener('click', async () => {
+        const area = document.getElementById('re_area').value.trim();
+        const psf = parseFloat(document.getElementById('re_psf').value);
+        const dateVal = document.getElementById('re_date').value;
+        reError.style.display = 'none';
+        if (!area || !isFinite(psf) || psf <= 0 || !dateVal) {
+          reError.textContent = 'Fill in area, a valid price, and a date.';
+          reError.style.display = 'block';
+          return;
+        }
+        try {
+          await addDoc(collection(db, 're_market'), { area, pricePerSqft: psf, date: dateVal });
+          document.getElementById('re_area').value = '';
+          document.getElementById('re_psf').value = '';
+          document.getElementById('re_date').value = '';
+        } catch (err) {
+          reError.textContent = err.message;
+          reError.style.display = 'block';
+        }
+      });
+    }
   }
 </script>
 
