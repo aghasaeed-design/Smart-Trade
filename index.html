@@ -301,6 +301,32 @@
   @media (max-width: 760px) { .sales-tips { grid-template-columns: 1fr; } }
   .sales-tips .card h3 { font-size: 16px; }
 
+  /* ---- Property assistant ---- */
+  .to-top { bottom: calc(86px + env(safe-area-inset-bottom, 0px)) !important; }
+  .pa-launch { position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 70; background: var(--gold); color: #0E1A2B; border: none; border-radius: 28px; padding: 13px 18px; font: 600 14px Inter, sans-serif; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,.35); }
+  .pa-nudge { position: fixed; right: 20px; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); z-index: 70; max-width: 250px; background: #fff; color: #0E1A2B; border-radius: 10px; padding: 12px 14px; font-size: 13.5px; box-shadow: 0 6px 18px rgba(0,0,0,.3); cursor: pointer; display: none; }
+  .pa-panel { position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 80; width: 380px; max-width: calc(100vw - 24px); height: 560px; max-height: calc(100vh - 40px); background: #0E1A2B; color: #F0F2F5; border: 1px solid var(--gold); border-radius: 10px; display: none; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,.5); overflow: hidden; }
+  .pa-panel.open { display: flex; }
+  .pa-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,.12); }
+  .pa-head img { height: 30px; background: #fff; border-radius: 4px; }
+  .pa-head b { display: block; font-size: 14.5px; } .pa-head span { font-size: 11.5px; opacity: .7; }
+  .pa-head button { margin-left: auto; background: none; border: none; color: #F0F2F5; font-size: 22px; cursor: pointer; }
+  .pa-msgs { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .pa-b, .pa-u { max-width: 86%; padding: 9px 12px; border-radius: 12px; font-size: 14px; line-height: 1.45; white-space: pre-wrap; }
+  .pa-b { background: #1B2B44; align-self: flex-start; } .pa-u { background: var(--gold); color: #0E1A2B; align-self: flex-end; }
+  .pa-opts { display: flex; flex-wrap: wrap; gap: 8px; } .pa-opts button { background: transparent; color: var(--gold-bright); border: 1px solid var(--gold); border-radius: 18px; padding: 7px 12px; font: 500 13px Inter, sans-serif; cursor: pointer; }
+  .pa-opts button:hover { background: var(--gold); color: #0E1A2B; }
+  .pa-input { display: none; gap: 8px; padding: 10px 12px; border-top: 1px solid rgba(255,255,255,.12); }
+  .pa-input input { flex: 1; padding: 10px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,.25); background: #0B1424; color: #F0F2F5; font: 14px Inter, sans-serif; }
+  .pa-input button, .pa-form button { background: var(--gold); color: #0E1A2B; border: none; border-radius: 6px; padding: 10px 14px; font: 600 13.5px Inter, sans-serif; cursor: pointer; }
+  .pa-form { display: flex; flex-direction: column; gap: 8px; background: #1B2B44; padding: 12px; border-radius: 10px; }
+  .pa-form input[type=text], .pa-form input[type=tel], .pa-form input[type=email], .pa-form select { padding: 9px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,.25); background: #0B1424; color: #F0F2F5; font: 14px Inter, sans-serif; }
+  .pa-form label.c { font-size: 12px; opacity: .85; display: flex; gap: 8px; align-items: flex-start; }
+  .pa-form .hp { position: absolute; left: -9999px; }
+  .pa-err { color: #F0917F; font-size: 12.5px; }
+  .pa-foot { padding: 8px 12px; font-size: 10.5px; opacity: .65; border-top: 1px solid rgba(255,255,255,.12); line-height: 1.4; }
+  .pa-wa { display: inline-block; background: #25D366; color: #06210f; text-decoration: none; font-weight: 600; font-size: 13.5px; padding: 9px 14px; border-radius: 6px; }
+
   /* ---- Back to top ---- */
   .to-top { position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--gold); background: #0E1A2B; color: var(--gold-bright); font-size: 22px; line-height: 1; cursor: pointer; z-index: 60; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity .25s, transform .25s, visibility .25s; box-shadow: 0 4px 14px rgba(0,0,0,.35); }
   .to-top.show { opacity: 1; visibility: visible; transform: none; }
@@ -861,6 +887,11 @@
         <button class="btn btn-primary" id="re_submit" style="width:100%; margin-top:14px; border:none; cursor:pointer;">Save update</button>
         <p class="modal-error" id="re_admin_error"></p>
       </div>
+      <div class="card" id="leadsAdmin" style="display:none; margin-top:24px;">
+        <h3>Property enquiries</h3>
+        <p style="margin-bottom:12px;">Only visible to you. Newest first.</p>
+        <div class="table-scroll"><table class="compare"><thead><tr><th>When</th><th>Lead</th><th>Contact</th><th>Details</th></tr></thead><tbody id="leadsBody"></tbody></table></div>
+      </div>
     </div>
   </section>
 
@@ -1261,7 +1292,7 @@
   } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
   import {
     getFirestore, doc, getDoc, setDoc, increment, onSnapshot,
-    collection, addDoc, query, orderBy, onSnapshot as onCollectionSnapshot
+    collection, addDoc, query, orderBy, limit, serverTimestamp, onSnapshot as onCollectionSnapshot
   } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
   // ↓↓↓ REPLACE with the config object Firebase gives you (step 2 above) ↓↓↓
@@ -1327,7 +1358,9 @@
         document.getElementById('userChipAvatar').src = user.photoURL || 'icon.svg';
         closeModal();
         document.getElementById('reAdminForm').style.display = (user.uid === ADMIN_UID) ? 'block' : 'none';
+        if (window.__leadsToggle) window.__leadsToggle(user.uid === ADMIN_UID);
       } else {
+        if (window.__leadsToggle) window.__leadsToggle(false);
         signInNavBtn.style.display = 'inline-block';
         userChip.style.display = 'none';
         document.getElementById('reAdminForm').style.display = 'none';
@@ -1380,6 +1413,33 @@
         modalError.style.display = 'block';
       }
     });
+
+    // ---- Property enquiries (leads): anyone can submit, only the owner can read ----
+    window.__saveLead = function(lead) {
+      return addDoc(collection(db, 're_leads'), Object.assign({}, lead, { createdAt: serverTimestamp(), status: 'new' }));
+    };
+    var leadsUnsub = null;
+    window.__leadsToggle = function(on) {
+      var box = document.getElementById('leadsAdmin');
+      if (!box) return;
+      box.style.display = on ? 'block' : 'none';
+      if (!on) { if (leadsUnsub) { leadsUnsub(); leadsUnsub = null; } return; }
+      if (leadsUnsub) return;
+      leadsUnsub = onCollectionSnapshot(query(collection(db, 're_leads'), orderBy('createdAt', 'desc'), limit(100)), function(snap) {
+        var body = document.getElementById('leadsBody'); body.innerHTML = '';
+        if (snap.empty) { body.innerHTML = '<tr><td colspan="4" style="color:var(--slate);">No enquiries yet.</td></tr>'; return; }
+        snap.forEach(function(d) {
+          var l = d.data(), tr = document.createElement('tr'), digits = String(l.phone || '').replace(/[^0-9]/g, '');
+          var when = l.createdAt && l.createdAt.toDate ? l.createdAt.toDate().toLocaleString() : '';
+          [when, (l.label || '').toUpperCase(), (l.name || '') + ' · ' + (l.phone || '') + (l.email ? ' · ' + l.email : '') + ' · prefers ' + (l.contactPref || '') + ', ' + (l.bestTime || ''), l.summary || ''].forEach(function(t) {
+            var td = document.createElement('td'); td.textContent = t; tr.appendChild(td);
+          });
+          var a = document.createElement('a'); a.href = 'https://wa.me/' + digits; a.target = '_blank'; a.rel = 'noopener'; a.textContent = ' WhatsApp';
+          tr.children[2].appendChild(a);
+          body.appendChild(tr);
+        });
+      }, function() { document.getElementById('leadsBody').innerHTML = '<tr><td colspan="4">Could not load enquiries. Check the Firestore rules.</td></tr>'; });
+    };
 
     // ---- UAE real estate area price tracker ----
     // Public: everyone reads the table. Only ADMIN_UID can submit new entries.
@@ -1628,6 +1688,169 @@
       if (mq.addEventListener) mq.addEventListener('change', render);
     }
   })();
+</script>
+
+<button class="pa-launch" id="paLaunch" aria-label="Open property assistant">&#128172; Property help</button>
+<div class="pa-nudge" id="paNudge">Looking to buy, sell or rent in Dubai? Ask me, it takes one minute.</div>
+<div class="pa-panel" id="paPanel" role="dialog" aria-label="Property assistant">
+  <div class="pa-head"><img src="logo.png" alt=""><div><b>Property assistant</b><span id="paSub">Virtual assistant for our licensed agent</span></div><button id="paClose" aria-label="Close">&times;</button></div>
+  <div class="pa-msgs" id="paMsgs" aria-live="polite"></div>
+  <div class="pa-input" id="paInput"><input type="text" id="paText" maxlength="150" autocomplete="off"><button id="paSend">Send</button></div>
+  <div class="pa-foot" id="paFoot"></div>
+</div>
+
+<script>
+/* ============================================================
+   PROPERTY ASSISTANT: guided enquiry flow (not a live AI model)
+   Fill in the AGENT block with your real details.
+   ============================================================ */
+(function() {
+  var AGENT = {
+    name: '',        // e.g. 'Agha Saeed'
+    company: '',     // brokerage name
+    orn: '',         // RERA Office Registration Number
+    brn: '',         // RERA Broker Registration Number
+    whatsapp: ''     // digits only with country code, e.g. '971501234567'
+  };
+  var who = AGENT.name ? AGENT.name : 'our licensed agent';
+  var $ = function(id) { return document.getElementById(id); };
+  var panel = $('paPanel'), msgs = $('paMsgs'), inp = $('paInput'), txt = $('paText'), nudge = $('paNudge');
+  var lic = [AGENT.company, AGENT.orn ? 'ORN ' + AGENT.orn : '', AGENT.brn ? 'BRN ' + AGENT.brn : ''].filter(Boolean).join(' · ');
+  $('paSub').textContent = 'Virtual assistant for ' + who;
+  $('paFoot').textContent = (lic ? 'RERA-registered broker: ' + lic + '. ' : '') + 'Automated assistant. It cannot give valuations or investment advice. Your answers and contact details are stored so the agent can reply to you.';
+
+  var TYPES = ['Apartment', 'Villa', 'Townhouse', 'Land', 'Commercial'];
+  var BEDS = ['Studio', '1 bed', '2 beds', '3 beds', '4+ beds'];
+  var BUDGET = ['Under AED 1M', 'AED 1M to 2M', 'AED 2M to 5M', 'AED 5M to 10M', 'Above AED 10M'];
+  var landOrComm = function(st) { return st.a.type === 'Land' || st.a.type === 'Commercial'; };
+  // node: q = question, k = answer key, l = label for summary, o = options, t = free text, n = next node (or function)
+  var N = {
+    start: { q: 'Hello! I help people buy, sell and rent property in the UAE. What brings you here?', k: 'role', l: 'Role', o: ['I want to buy', 'I want to sell', 'I want to rent out my property', 'I am looking to rent', 'Just exploring investing'], n: function(st) { return { 'I want to buy': 'b1', 'I want to sell': 's1', 'I want to rent out my property': 'r1', 'I am looking to rent': 't1', 'Just exploring investing': 'i1' }[st.a.role]; } },
+    s1: { q: 'Are you the owner of the property?', k: 'own', l: 'Owner', o: ['Yes, it is in my name', 'I represent the owner (POA)', 'Not yet'], n: 's2' },
+    s2: { q: 'What type of property is it?', k: 'type', l: 'Type', o: TYPES, n: 's3' },
+    s3: { q: 'Where is it? Community and building or project, for example Dubai Marina, Marina Gate.', k: 'loc', l: 'Location', t: 1, n: function(st) { return landOrComm(st) ? 's5' : 's4'; } },
+    s4: { q: 'How many bedrooms?', k: 'beds', l: 'Bedrooms', o: BEDS, n: 's5' },
+    s5: { q: 'Is it ready and empty, ready and rented, or off-plan?', k: 'st', l: 'Status', o: ['Ready, vacant', 'Ready, rented', 'Off-plan (resale)'], n: 's6' },
+    s6: { q: 'What price are you expecting (your asking price in AED)?', k: 'price', l: 'Asking price', t: 1, n: 's7' },
+    s7: { q: 'Is there a mortgage on it?', k: 'mort', l: 'Mortgage', o: ['Yes', 'No'], n: 's8' },
+    s8: { q: 'How soon do you want to sell?', k: 'tl', l: 'Timeline', o: ['Within 1 month', '1 to 3 months', '3 to 6 months', 'Just testing the market'], n: 's9' },
+    s9: { q: 'Are you already working with another agent?', k: 'ag', l: 'Other agent', o: ['No', 'Yes, non-exclusive', 'Yes, exclusive agreement'], n: 'contact' },
+    r1: { q: 'Where is the property? Community and building or project.', k: 'loc', l: 'Location', t: 1, n: 'r2' },
+    r2: { q: 'What type of property?', k: 'type', l: 'Type', o: TYPES, n: function(st) { return landOrComm(st) ? 'r4' : 'r3'; } },
+    r3: { q: 'How many bedrooms?', k: 'beds', l: 'Bedrooms', o: BEDS, n: 'r4' },
+    r4: { q: 'Furnished or unfurnished?', k: 'furn', l: 'Furnishing', o: ['Furnished', 'Unfurnished'], n: 'r5' },
+    r5: { q: 'What yearly rent do you expect (AED)?', k: 'price', l: 'Expected rent', t: 1, n: 'r6' },
+    r6: { q: 'When is it available?', k: 'tl', l: 'Available', o: ['Now', 'Within 1 month', '1 to 3 months'], n: 'contact' },
+    b1: { q: 'Will you live in it or is it an investment?', k: 'purpose', l: 'Purpose', o: ['Live in it', 'Investment (rental income)', 'Investment (resale gain)'], n: 'b2' },
+    b2: { q: 'What type of property?', k: 'type', l: 'Type', o: TYPES, n: 'b3' },
+    b3: { q: 'Which areas or projects do you prefer?', k: 'loc', l: 'Areas', t: 1, n: 'b4' },
+    b4: { q: 'What is your budget?', k: 'price', l: 'Budget', o: BUDGET, n: 'b5' },
+    b5: { q: 'How will you pay?', k: 'fin', l: 'Payment', o: ['Cash', 'Mortgage, pre-approved', 'Mortgage, not yet applied', 'Off-plan payment plan'], n: 'b6' },
+    b6: { q: 'Are you open to off-plan, or only ready property?', k: 'st', l: 'Status', o: ['Ready only', 'Off-plan only', 'Either'], n: 'b7' },
+    b7: { q: 'How soon do you want to buy?', k: 'tl', l: 'Timeline', o: ['Within 1 month', '1 to 3 months', '3 to 6 months', 'Just researching'], n: 'b8' },
+    b8: { q: 'Are you a UAE resident?', k: 'res', l: 'Resident', o: ['Yes', 'No, overseas'], n: 'contact' },
+    t1: { q: 'Which area do you want to rent in?', k: 'loc', l: 'Area', t: 1, n: 't2' },
+    t2: { q: 'What are you looking for?', k: 'beds', l: 'Looking for', o: BEDS.concat(['Villa']), n: 't3' },
+    t3: { q: 'What is your yearly budget (AED)?', k: 'price', l: 'Budget', t: 1, n: 't4' },
+    t4: { q: 'When do you want to move in?', k: 'tl', l: 'Move-in', o: ['Now', 'Within 1 month', '1 to 3 months'], n: 'contact' },
+    i1: { q: 'What is your main goal?', k: 'goal', l: 'Goal', o: ['Rental income', 'Capital growth', 'Both', 'Not sure yet'], n: 'i2' },
+    i2: { q: 'What is your investment budget?', k: 'price', l: 'Budget', o: BUDGET, n: 'i3' },
+    i3: { q: 'How long would you hold the property?', k: 'tl', l: 'Horizon', o: ['Under 3 years', '3 to 7 years', '7+ years'], n: 'contact' }
+  };
+
+  var st, started = false;
+  function reset() { st = { a: {}, lab: [], node: 'start' }; }
+  function bubble(cls, text) { var d = document.createElement('div'); d.className = cls; d.textContent = text; msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight; return d; }
+  function bot(text, cb) { var d = bubble('pa-b', '...'); setTimeout(function() { d.textContent = text; msgs.scrollTop = msgs.scrollHeight; if (cb) cb(); }, 450); }
+  function setInput(on) { inp.style.display = on ? 'flex' : 'none'; if (on) txt.focus(); }
+
+  function ask(id) {
+    st.node = id; if (id === 'contact') return contact();
+    var nd = N[id]; setInput(false);
+    bot(nd.q, function() {
+      if (nd.t) { txt.value = ''; txt.placeholder = 'Type your answer'; setInput(true); return; }
+      var box = document.createElement('div'); box.className = 'pa-opts';
+      nd.o.forEach(function(o) { var b = document.createElement('button'); b.textContent = o; b.onclick = function() { box.remove(); answer(o); }; box.appendChild(b); });
+      msgs.appendChild(box); msgs.scrollTop = msgs.scrollHeight;
+    });
+  }
+  function answer(v) {
+    var nd = N[st.node]; v = String(v).trim().slice(0, 150); if (!v) return;
+    bubble('pa-u', v); st.a[nd.k] = v; st.lab.push(nd.l + ': ' + v);
+    var nx = typeof nd.n === 'function' ? nd.n(st) : nd.n; ask(nx);
+  }
+  $('paSend').onclick = function() { var v = txt.value; if (v.trim()) { setInput(false); answer(v); } };
+  txt.addEventListener('keydown', function(e) { if (e.key === 'Enter') $('paSend').click(); });
+
+  function score() {
+    var a = st.a, n = 0;
+    if (/Within 1 month|Now/.test(a.tl || '')) n += 2; else if (/1 to 3/.test(a.tl || '')) n += 1;
+    if (/Just testing|Just researching/.test(a.tl || '')) n -= 1;
+    if (/in my name/.test(a.own || '')) n += 2; else if (/POA/.test(a.own || '')) n += 1;
+    if (/Cash|pre-approved/.test(a.fin || '')) n += 2;
+    if (a.price && !/not sure/i.test(a.price)) n += 1;
+    if (/exclusive agreement/.test(a.ag || '')) n -= 2;
+    return n;
+  }
+
+  function contact() {
+    setInput(false);
+    bot('Thank you. To have ' + who + ' contact you with options, please share your details.', function() {
+      var f = document.createElement('div'); f.className = 'pa-form';
+      f.innerHTML = '<input type="text" id="pf_n" placeholder="Your name" maxlength="80" autocomplete="name">' +
+        '<input type="tel" id="pf_p" placeholder="Phone with country code" maxlength="20" autocomplete="tel">' +
+        '<input type="email" id="pf_e" placeholder="Email (optional)" maxlength="100" autocomplete="email">' +
+        '<select id="pf_c"><option>WhatsApp</option><option>Phone call</option><option>Email</option></select>' +
+        '<select id="pf_t"><option>Any time</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select>' +
+        '<input type="text" class="hp" id="pf_h" tabindex="-1" autocomplete="off">' +
+        '<label class="c"><input type="checkbox" id="pf_k"> I agree to be contacted about my enquiry and for my details to be stored for that purpose.</label>' +
+        '<div class="pa-err" id="pf_x"></div><button id="pf_s">Send my details</button>';
+      msgs.appendChild(f); msgs.scrollTop = msgs.scrollHeight;
+      $('pf_s').onclick = function() { submit(f); };
+    });
+  }
+  function submit(f) {
+    var name = $('pf_n').value.trim(), phone = $('pf_p').value.trim(), err = $('pf_x');
+    if ($('pf_h').value) return;
+    if (name.length < 2) { err.textContent = 'Please enter your name.'; return; }
+    if (phone.replace(/[^0-9]/g, '').length < 8) { err.textContent = 'Please enter a valid phone number.'; return; }
+    if (!$('pf_k').checked) { err.textContent = 'Please tick the consent box.'; return; }
+    var last = Number(localStorage.getItem('pa_last') || 0);
+    if (Date.now() - last < 60000) { err.textContent = 'Please wait a minute before sending another enquiry.'; return; }
+    var sc = score(), lead = { role: st.a.role || '', answers: st.a, summary: st.lab.join(' | ').slice(0, 900), name: name.slice(0, 80), phone: phone.slice(0, 20),
+      email: $('pf_e').value.trim().slice(0, 100), contactPref: $('pf_c').value, bestTime: $('pf_t').value, score: sc, label: sc >= 4 ? 'hot' : sc >= 2 ? 'warm' : 'cold', page: location.href.slice(0, 200) };
+    $('pf_s').disabled = true; err.textContent = '';
+    var save = window.__saveLead ? window.__saveLead(lead) : Promise.reject(new Error('offline'));
+    save.then(function() { localStorage.setItem('pa_last', String(Date.now())); done(f, lead, true); })
+        .catch(function() { done(f, lead, false); });
+  }
+  function done(f, lead, saved) {
+    f.remove(); setInput(false);
+    bot(saved ? 'Thank you, ' + lead.name + '. ' + who + ' will contact you by ' + lead.contactPref.toLowerCase() + '.' : 'Your details could not be saved just now. Please message the agent directly instead.', function() {
+      var wa = AGENT.whatsapp.replace(/[^0-9]/g, '');
+      var box = document.createElement('div'); box.className = 'pa-opts';
+      if (wa) { var a = document.createElement('a'); a.className = 'pa-wa'; a.target = '_blank'; a.rel = 'noopener';
+        a.href = 'https://wa.me/' + wa + '?text=' + encodeURIComponent('Hello, I enquired on your website. ' + lead.summary + ' | Name: ' + lead.name);
+        a.textContent = 'Continue on WhatsApp'; box.appendChild(a); }
+      var r = document.createElement('button'); r.textContent = 'Start a new enquiry'; r.onclick = function() { msgs.innerHTML = ''; reset(); ask('start'); };
+      box.appendChild(r); msgs.appendChild(box); msgs.scrollTop = msgs.scrollHeight;
+    });
+  }
+
+  function open() { panel.classList.add('open'); $('paLaunch').style.display = 'none'; nudge.style.display = 'none'; if (!started) { started = true; reset(); ask('start'); } }
+  function close() { panel.classList.remove('open'); $('paLaunch').style.display = ''; }
+  $('paLaunch').onclick = open; nudge.onclick = open; $('paClose').onclick = close;
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close(); });
+
+  // Gentle nudge once per session when a visitor reaches the property sections
+  if ('IntersectionObserver' in window && !sessionStorage.getItem('pa_nudged')) {
+    var io = new IntersectionObserver(function(es) {
+      es.forEach(function(e) { if (e.isIntersecting && !panel.classList.contains('open')) {
+        sessionStorage.setItem('pa_nudged', '1'); nudge.style.display = 'block'; setTimeout(function() { nudge.style.display = 'none'; }, 9000); io.disconnect(); } });
+    }, { threshold: 0.25 });
+    ['realestate', 'developers'].forEach(function(id) { var el = $(id); if (el) io.observe(el); });
+  }
+})();
 </script>
 
 </body>
